@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3506564c283eb004385032051a5777e5, type: 3}
+  m_Name: DataNotify
+  m_EditorClassIdentifier: 
+  listNotiConfig:
+  - idDay: 0
+    listInfoNoti:
+    - time: 1
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Welcome to \"Pixel Book: Coloring
+        World\"!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F60E\U0001F58C\uFE0FShow us your coloring skill!!!\U0001F60B\U0001F3A8"
+    - time: 4
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Welcome to \"Pixel Book: Coloring
+        World\"!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F60E\U0001F58C\uFE0FShow us your coloring skill!!!\U0001F60B\U0001F3A8"
+    - time: 7
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Welcome to \"Pixel Book: Coloring
+        World\"!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F60E\U0001F58C\uFE0FShow us your coloring skill!!!\U0001F60B\U0001F3A8"
+  - idDay: 1
+    listInfoNoti:
+    - time: 12
+      strTitle: "\u2728\u2728 New Update!!! \u2728\u2728"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Many new pictures are waiting for you,
+        let's play!!! \U0001F3A8\U0001F5BC\uFE0F"
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Let's Paint!!! \U0001F60B\U0001F3A8"
+      strText: "\U0001F929\U0001F3A8 New colors, new fun! Start your artistic adventure
+        now! \U0001F60E\U0001F58C\uFE0F"
+  - idDay: 2
+    listInfoNoti:
+    - time: 12
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Welcome to \"Pixel Book: Coloring
+        World\"!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F60E\U0001F58C\uFE0FShow us your coloring skill!!!\U0001F60B\U0001F3A8"
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F You have a Daily Quest!! \U0001F5D2\uFE0F\u2705"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Let's do it now!!! \U0001F3A8\U0001F5BC\uFE0F"
+  - idDay: 3
+    listInfoNoti:
+    - time: 12
+      strTitle: "\U0001F929\U0001F3A8 It's time to relax!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F929\U0001F3A8 Let's play and complete many beautiful pictures!!
+        \U0001F5BC\uFE0F\U0001F5BC\uFE0F"
+  - idDay: 4
+    listInfoNoti:
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F You have a Daily Quest!! \U0001F5D2\uFE0F\u2705"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Let's do it now!!! \U0001F3A8\U0001F5BC\uFE0F"
+  - idDay: 5
+    listInfoNoti:
+    - time: 12
+      strTitle: "\u2728\u2728 New Update!!! \u2728\u2728"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Many new pictures are waiting for you,
+        let's play!!! \U0001F3A8\U0001F5BC\uFE0F"
+  - idDay: 6
+    listInfoNoti:
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Let's Paint!!! \U0001F60B\U0001F3A8"
+      strText: "\U0001F929\U0001F3A8 New colors, new fun! Start your artistic adventure
+        now! \U0001F60E\U0001F58C\uFE0F"
+  - idDay: 7
+    listInfoNoti:
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F Welcome to \"Pixel Book: Coloring
+        World\"!!! \U0001F929\U0001F3A8"
+      strText: "\U0001F60E\U0001F58C\uFE0FShow us your coloring skill!!!\U0001F60B\U0001F3A8"
+    - time: 20
+      strTitle: "\u2728\u2728 New Update!!! \u2728\u2728"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Many new pictures are waiting for you,
+        let's play!!! \U0001F3A8\U0001F5BC\uFE0F"
+    - time: 20
+      strTitle: "\U0001F5BC\uFE0F\U0001F58C\uFE0F You have a Daily Quest!! \U0001F5D2\uFE0F\u2705"
+      strText: "\U0001F3A8\U0001F5BC\uFE0F Let's do it now!!! \U0001F3A8\U0001F5BC\uFE0F"

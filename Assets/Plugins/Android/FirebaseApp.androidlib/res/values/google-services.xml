@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="gcm_defaultSenderId" translatable="false">184040076333</string>
+  <string name="google_storage_bucket" translatable="false">colora---zt-2024-671c2.firebasestorage.app</string>
+  <string name="project_id" translatable="false">colora---zt-2024-671c2</string>
+  <string name="google_api_key" translatable="false">AIzaSyCK6H8D_p56y23x8HiQp02UKR6-D5tAqMo</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCK6H8D_p56y23x8HiQp02UKR6-D5tAqMo</string>
+  <string name="google_app_id" translatable="false">1:184040076333:android:0ac94e2f7d337e8d37b4a4</string>
+</resources>

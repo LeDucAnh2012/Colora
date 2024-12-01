@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "184040076333",
+    "project_id": "colora---zt-2024-671c2",
+    "storage_bucket": "colora---zt-2024-671c2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184040076333:android:0ac94e2f7d337e8d37b4a4",
+        "android_client_info": {
+          "package_name": "com.colora.spranky.horror.sprunki.beat.coloring.game"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK6H8D_p56y23x8HiQp02UKR6-D5tAqMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

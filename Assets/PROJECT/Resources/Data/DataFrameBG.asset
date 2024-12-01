@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6103a997f197eab44b4a87ce0f94e992, type: 3}
+  m_Name: DataFrameBG
+  m_EditorClassIdentifier: 
+  listFrame:
+  - id: -1
+    spr: {fileID: 21300000, guid: 291e327c209d82541b14cfc69cbcdd0c, type: 3}
+    typeUnlock: 1
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 16.5
+  - id: 0
+    spr: {fileID: 21300000, guid: 5b7f42f32a389ca4bb4d9cd5fbaf671a, type: 3}
+    typeUnlock: 1
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 21.5
+  - id: 1
+    spr: {fileID: 21300000, guid: 91c173cb74c753440936630d78888446, type: 3}
+    typeUnlock: 1
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 18.5
+  - id: 2
+    spr: {fileID: 21300000, guid: bd5de05ccbaf1ca44bb230b614bea87d, type: 3}
+    typeUnlock: 1
+    typeElement: 1
+    localPos: {x: 0, y: 3}
+    recPos: {x: 0, y: 40}
+    sizeCamShot: 21.5
+  - id: 3
+    spr: {fileID: 21300000, guid: 788cd4d0a455649448549b1506e2a042, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 18
+  - id: 4
+    spr: {fileID: 21300000, guid: f045fcac2a1b1e6468707610fcb14842, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 18
+  - id: 5
+    spr: {fileID: 21300000, guid: 0a7aa4589c2951a4da2c63ef359beccd, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 20
+  - id: 6
+    spr: {fileID: 21300000, guid: e3bff518be5f806478d96ae4907ef7ee, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: -1}
+    recPos: {x: 0, y: -12}
+    sizeCamShot: 18.9
+  - id: 7
+    spr: {fileID: 21300000, guid: ed07a573dc3b8184daa36a3ac69c2122, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: 1.5}
+    recPos: {x: 0, y: 23}
+    sizeCamShot: 20.5
+  - id: 8
+    spr: {fileID: 21300000, guid: beb48e776c1d6bf4d9f87050b819e561, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 20.1
+  - id: 9
+    spr: {fileID: 21300000, guid: 5344237210b99df44b52fca02eab7aa0, type: 3}
+    typeUnlock: 2
+    typeElement: 1
+    localPos: {x: -0.6, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 18.7
+  listBG:
+  - id: -1
+    spr: {fileID: 21300000, guid: 291e327c209d82541b14cfc69cbcdd0c, type: 3}
+    typeUnlock: 1
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 0
+    spr: {fileID: 21300000, guid: 071328c18b5b046409cde7eb7375aada, type: 3}
+    typeUnlock: 1
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 1
+    spr: {fileID: 21300000, guid: 09de864cc4a93c24985dcb05c2845ad3, type: 3}
+    typeUnlock: 1
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 2
+    spr: {fileID: 21300000, guid: 7a94d4c2e3d054e4384f147aeb564ba2, type: 3}
+    typeUnlock: 1
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 3
+    spr: {fileID: 21300000, guid: b0e80bae7ba36c04f96616e7180924e3, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 4
+    spr: {fileID: 21300000, guid: e3bfee02dca46ee4ba310e553b90b839, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 5
+    spr: {fileID: 21300000, guid: d8d1e2489ac0d824f8aa42556ee8b2b5, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 6
+    spr: {fileID: 21300000, guid: 60e80f62465284b43992a74ce52b5ca4, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 7
+    spr: {fileID: 21300000, guid: 7e93428b049398b42950cffcf88b6c10, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 8
+    spr: {fileID: 21300000, guid: 8a7d01d87b801c248b61e427b72480af, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  - id: 9
+    spr: {fileID: 21300000, guid: 23a61788e76b8634eb43977ba3987e50, type: 3}
+    typeUnlock: 2
+    typeElement: 2
+    localPos: {x: 0, y: 0}
+    recPos: {x: 0, y: 0}
+    sizeCamShot: 0
+  isChange: 0

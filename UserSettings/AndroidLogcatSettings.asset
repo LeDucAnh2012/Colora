@@ -1,13 +1,32 @@
 {
-    "m_SelectedDeviceId": "",
+    "m_SelectedDeviceId": "R7AWC0Q4C4K",
     "m_SelectedProcess": {
         "deviceId": "",
         "name": "",
         "processId": 0,
         "exited": false
     },
-    "m_SelectedPriority": 0,
-    "m_KnownProcessesForSerialization": [],
+    "m_SelectedPriority": 4,
+    "m_KnownProcessesForSerialization": [
+        {
+            "deviceId": "R7AWC0Q4C4K",
+            "name": "com.android.settings",
+            "processId": 27424,
+            "exited": false
+        },
+        {
+            "deviceId": "R7AWC0Q4C4K",
+            "name": "com.sec.android.app.launcher",
+            "processId": 30143,
+            "exited": false
+        },
+        {
+            "deviceId": "R7AWC0Q4C4K",
+            "name": "android.process.media",
+            "processId": 25632,
+            "exited": false
+        }
+    ],
     "m_Tags": {
         "m_Entries": [
             {
@@ -45,8 +64,19 @@
         "Height": 0.0
     },
     "m_MemoryViewerState": {
-        "MemoryWindowWidth": 0.0,
-        "MemoryTypeEnabled": [],
+        "MemoryWindowWidth": 170.0,
+        "MemoryTypeEnabled": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
         "MemoryGroup": 2,
         "AutoCapture": true
     },

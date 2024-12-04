@@ -134,7 +134,7 @@ public class ZoomInZoomOut : MonoBehaviour
                 e.colorLerp = Color.Lerp(Color.white, e.colorGray, t);
 
                 float valAlpha = (mainCamera.orthographicSize) / maxSizeCam;
-                e.colorText = new Color(0f, 0, 0, 1 - valAlpha);
+                e.colorText = new Color(0f, 0, 0, 1 - valAlpha+0.1f);
 
                 if (e.numColor != levelLoader.numCurrent)
                     e.SetColorDefault(e.colorLerp, e.colorText, isShowText);

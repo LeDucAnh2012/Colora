@@ -74,7 +74,7 @@ public class ElementBooster : PanelBase
         imgAds.gameObject.SetActive(!isOn);
 
         //    iconBoosterEnd.gameObject.SetActive(!isOn);
-        iconBooster.gameObject.SetActive(isOn);
+        iconBooster.gameObject.SetActive(true);
 
         if (!isOn)
         {

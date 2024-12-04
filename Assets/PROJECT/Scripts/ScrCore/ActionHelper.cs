@@ -775,16 +775,16 @@ public static class ActionHelper
     #region[ Call ADS ]
     public static void ShowBanner()
     {
-        //CC_Interface.instance.ShowBanner();
+        CC_Interface.instance.ShowBanner();
     }
     public static void DestroyBanner()
     {
-        //CC_Interface.instance.DestroyBanner();
+        CC_Interface.instance.DestroyBanner();
     }
     public static void ShowBannerCollapse(bool isShowLoading, UnityAction callback = null)
     {
         callback?.Invoke();
-        //AdsConfig.instance.ShowBannerCollapseNow(isShowLoading, callbackLoad);
+        AdsConfig.instance.ShowBannerCollapseNow(isShowLoading, callback);
     }
 
     public static void ShowCMP(UnityAction callback = null)

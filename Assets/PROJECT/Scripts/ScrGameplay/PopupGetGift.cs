@@ -57,7 +57,7 @@ public class PopupGetGift : PanelBase
         }
 
         if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.GameplayScene)
-            StartCoroutine(IE_Move(listType, false));
+            StartCoroutine(IE_Move(listType, true));
         else
             Invoke(nameof(Hide), 1.5f);
     }

@@ -6550,7 +6550,8 @@ MonoBehaviour:
   clipBooster: {fileID: 8300000, guid: 4bd56a83998064a42948f2ddfa17b3c0, type: 3}
   clipCompletedLevel: {fileID: 8300000, guid: 7a3873c4361959745a07e4b270101f5d, type: 3}
   clipShowPopup: {fileID: 8300000, guid: 759a991088e5d1c47972de7a607b4cd9, type: 3}
-  maxSountTap: 15
+  maxSountTap: 7
+  timeStep: 0.025
   listSpawnClip: []
 --- !u!1 &1746877235
 GameObject:

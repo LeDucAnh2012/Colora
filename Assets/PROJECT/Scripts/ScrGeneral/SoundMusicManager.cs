@@ -37,28 +37,21 @@ public class SoundMusicManager : MonoBehaviour
         }
         PlayMusic(StateGame.Home);
     }
-    public bool GetIsSound()
-    {
-        return VariableSystem.Sound == 1;
-    }
-    public bool GetIsMusic()
-    {
-        return VariableSystem.Music == 1;
-    }
+
     private void PlaySound(AudioClip clip, bool isLoop = false)
     {
-        if (!GetIsSound()) return;
+        if (!VariableSystem.Sound) return;
         if (clip != null)
         {
             if (!isLoop)
             {
                 sourceSound.loop = false;
-                sourceSound.PlayOneShot(clip, VariableSystem.Sound);
+                sourceSound.PlayOneShot(clip);
             }
             else
             {
                 sourceSound.clip = clip;
-                sourceSound.volume = VariableSystem.Sound;
+                sourceSound.volume = 1;
                 sourceSound.loop = true;
                 sourceSound.Play();
             }
@@ -68,7 +61,7 @@ public class SoundMusicManager : MonoBehaviour
     public void PlayMusic(StateGame state)
     {
         stateGame = state;
-        if (!GetIsMusic())
+        if (!VariableSystem.Music)
         {
             sourceMusic.Stop();
             return;
@@ -114,16 +107,18 @@ public class SoundMusicManager : MonoBehaviour
 
     #region Funct Sound
     public int maxSountTap = 10;
+    public float timeStep = 0.01f;
     public List<SpawnClip> listSpawnClip = new List<SpawnClip>();
     public void SoundTapPaintColor()
     {
-        if (!GetIsSound()) return;
-        if (listSpawnClip.Count >= 10) return;
+        if (!VariableSystem.Sound) return;
+        if (listSpawnClip.Count >= maxSountTap) return;
         var cl = Instantiate(spawnClip, transform);
         listSpawnClip.Add(cl);
-        float timeDelay = 0.001f * listSpawnClip.Count;
+        float timeDelay = Mathf.Max(timeStep * listSpawnClip.Count, 0.1f);
         cl.Spawn(clipTapPaintColor, timeDelay);
     }
+
     public void SoundUseBooster()
     {
         PlaySound(clipBooster);

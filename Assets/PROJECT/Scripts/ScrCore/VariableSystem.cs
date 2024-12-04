@@ -30,21 +30,21 @@ public static class VariableSystem
     //        return _typeBooster;
     //    }
     //}
-    public static int Sound
+    public static bool Sound
     {
-        get => PlayerPrefs.GetInt(nameof(Sound), 1);
+        get => PlayerPrefs.GetInt(nameof(Sound), 1)==1;
         set
         {
-            PlayerPrefs.SetInt(nameof(Sound), value);
+            PlayerPrefs.SetInt(nameof(Sound), value?1:0);
             PlayerPrefs.Save();
         }
     }
-    public static int Music
+    public static bool Music
     {
-        get => PlayerPrefs.GetInt(nameof(Music), 1);
+        get => PlayerPrefs.GetInt(nameof(Music), 1)==1;
         set
         {
-            PlayerPrefs.SetInt(nameof(Music), value);
+            PlayerPrefs.SetInt(nameof(Music), value?1:0);
             PlayerPrefs.Save();
         }
     }

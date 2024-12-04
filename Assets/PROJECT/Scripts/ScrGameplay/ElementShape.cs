@@ -83,11 +83,11 @@ public class ElementShape : MonoBehaviour
             if (list.Count <= 2)
             {
                 sprRenderNumber.sprite = listMappingFonts[list[0]].sprNum;
-                sprRenderNumber.transform.localPosition = Vector2.right * -0.058f;
+                sprRenderNumber.transform.localPosition = Vector2.right * -0.06f;
 
                 sprRenderNumber_1.gameObject.SetActive(true);
                 sprRenderNumber_1.sprite = listMappingFonts[list[1]].sprNum;
-                sprRenderNumber_1.transform.localPosition = Vector2.right * 0.058f;
+                sprRenderNumber_1.transform.localPosition = Vector2.right * 0.06f;
             }
             else
             {

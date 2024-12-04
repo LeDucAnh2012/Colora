@@ -139,8 +139,6 @@ public class HomeUIManager : MonoBehaviour
         if (btnCurrent != null)
         {
             OnChoose(btnCurrent, false);
-            if (btnCurrent != btn)
-                ActionHelper.CheckShowInter();
         }
         btnCurrent = btn;
         OnChoose(btnCurrent, true);

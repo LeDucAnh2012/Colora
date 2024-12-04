@@ -122,7 +122,7 @@ public class ElementLevel : PanelBase
         }
         else
         {
-            imgFrame.transform.localScale = Vector2.one;
+        
 
             if (idBG != -1)
             {

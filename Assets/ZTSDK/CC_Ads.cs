@@ -22,9 +22,8 @@ public enum TypeAds
     NativeOverlay,
     IAP
 }
-public class CC_Ads : MonoBehaviour
+public class CC_Ads : UnitySingleton<CC_Ads>
 {
-    public static CC_Ads instance;
 
     private string _adUnitId_Banner = "";
     private string _adUnitId_Inter = "";
@@ -42,7 +41,6 @@ public class CC_Ads : MonoBehaviour
     private bool isLoadInter;
     private bool isLoadReward;
     private bool isRewarded;
-    public bool Initilized { get; private set; }
 
     private Action<bool> callbackReward;
     private string whereReward;
@@ -50,15 +48,11 @@ public class CC_Ads : MonoBehaviour
     public Action<bool> callbackInter;
     private bool IsReloadAds = true;
 
-    string deviceIDTest2;
-    bool isLoadAds = false;
+    private string deviceIDTest2;
+    private bool isLoadAds = false;
     private List<int> listLevelShowCMP = new List<int>();
     public bool isShowCMP = false;
     private bool isContinueLoading = false;
-    private void Awake()
-    {
-        instance = this;
-    }
     public void Start()
     {
         RegisterKeyAds();
@@ -106,7 +100,7 @@ public class CC_Ads : MonoBehaviour
 
         // reward
 #if UNITY_ANDROID
-        _adUnitId_Reward = "ca-app-pub-7702289911487047/3314247486";
+        _adUnitId_Reward = " ca-app-pub-7702289911487047/9688084149";
 #elif UNITY_IOS
         _adUnitId_Reward = "";
 #else
@@ -115,9 +109,9 @@ public class CC_Ads : MonoBehaviour
         if (VariableSystem.IsUseIdTest)
         {
 #if UNITY_ANDROID
-            _adUnitId_Reward = "ca-app-pub-3940256099942544/1033173712";
+            _adUnitId_Reward = "ca-app-pub-3940256099942544/5224354917";
 #elif UNITY_IOS
-            _adUnitId_Reward = "ca-app-pub-3940256099942544/4411468910";
+            _adUnitId_Reward = "ca-app-pub-3940256099942544/1712485313";
 #endif
         }
     }
@@ -125,12 +119,16 @@ public class CC_Ads : MonoBehaviour
     {
         if (!isLoadAds)
         {
+        Debug.Log("InitAds");
             isLoadAds = true;
             // Initialize the Google Mobile Ads SDK.
             MobileAds.Initialize((InitializationStatus initStatus) =>
             {
                 // This callback is called once the MobileAds SDK is initialized
-                CreateBannerView();
+                Debug.Log("Load Reward");
+                LoadReward();
+                LoadBanner();
+                LoadInterAds();
                 ListenToAdEvents();
 
             });
@@ -247,7 +245,7 @@ public class CC_Ads : MonoBehaviour
         if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack)
             return;
 
-        if (!Initilized || !TimeManager.instance.IsHasInternet || isLoadBanner || CC_Interface.instance.HasBanner)
+        if (    !TimeManager.instance.IsHasInternet || isLoadBanner || CC_Interface.instance.HasBanner)
             return;
 
         if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
@@ -280,7 +278,7 @@ public class CC_Ads : MonoBehaviour
     /// </summary>
     public void LoadInterAds()
     {
-        if (!Initilized || !TimeManager.instance.IsHasInternet || isLoadInter || VariableSystem.RemoveAds)
+        if (  !TimeManager.instance.IsHasInternet || isLoadInter || VariableSystem.RemoveAds)
             return;
         Debug.Log("inter loaded");
         isLoadInter = true;
@@ -418,7 +416,7 @@ public class CC_Ads : MonoBehaviour
     /// </summary>
     public void LoadReward()
     {
-        if (!Initilized || !TimeManager.instance.IsHasInternet || isLoadReward)
+        if ( !TimeManager.instance.IsHasInternet || isLoadReward)
             return;
         Debug.Log("reward loaded");
         isLoadReward = true;
@@ -453,7 +451,7 @@ public class CC_Ads : MonoBehaviour
 
                 _rewardedAd = ad;
                 RegisterEventHandlers(_rewardedAd);
-                RegisterEventHandlers(_rewardedAd);
+                RegisterReloadHandler(_rewardedAd);
             });
     }
     public void ShowRewardedAd(string where = "", Action<bool> callback = null)
@@ -488,7 +486,7 @@ public class CC_Ads : MonoBehaviour
         }
         else
         {
-            isLoadReward = true;
+            isLoadReward = false;
             if (ActionHelper.IsEditor())
             {
                 AdsConfig.instance.countTimeInterReward.time = 0;
@@ -497,6 +495,7 @@ public class CC_Ads : MonoBehaviour
 
             CanvasAllScene.instance.ShowNoti(I2.Loc.ScriptLocalization.Ads_is_not_ready);
             callback?.Invoke(false);
+            LoadReward();
         }
     }
     private void RegisterEventHandlers(RewardedAd ad)

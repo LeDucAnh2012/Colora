@@ -115,6 +115,13 @@ MonoBehaviour:
       - Create
       Flags: 00
       Languages_Touch: []
+    - Term: DAILY GIFT
+      TermType: 0
+      Description: 
+      Languages:
+      - Daily Gift
+      Flags: 00
+      Languages_Touch: []
     - Term: DIY
       TermType: 0
       Description: 
@@ -134,6 +141,13 @@ MonoBehaviour:
       Description: 
       Languages:
       - Daily quest
+      Flags: 00
+      Languages_Touch: []
+    - Term: Day
+      TermType: 0
+      Description: 
+      Languages:
+      - Day
       Flags: 00
       Languages_Touch: []
     - Term: Draw pixel
@@ -6386,6 +6400,13 @@ MonoBehaviour:
       - discover
       Flags: 00
       Languages_Touch: []
+    - Term: oops!
+      TermType: 0
+      Description: 
+      Languages:
+      - oops!
+      Flags: 00
+      Languages_Touch: []
     - Term: please let us know what do you think.
       TermType: 0
       Description: 
@@ -6398,27 +6419,6 @@ MonoBehaviour:
       Description: 
       Languages:
       - you will receive a gift after a few seconds
-      Flags: 00
-      Languages_Touch: []
-    - Term: oops!
-      TermType: 0
-      Description: 
-      Languages:
-      - oops!
-      Flags: 00
-      Languages_Touch: []
-    - Term: DAILY GIFT
-      TermType: 0
-      Description: 
-      Languages:
-      - Daily Gift
-      Flags: 00
-      Languages_Touch: []
-    - Term: Day
-      TermType: 0
-      Description: 
-      Languages:
-      - Day
       Flags: 00
       Languages_Touch: []
     CaseInsensitiveTerms: 0

@@ -27,7 +27,7 @@ public class ElementDailyQuest : PanelBase
     {
         this.data = data;
 
-        string str = I2.Loc.LocalizationManager.GetTermTranslation(data.nameQuest);
+        string str = I2.Loc.LocalizationManager.GetTermTranslation(data.nameQuest) ?? data.nameQuest;
         iconQuest.transform.localScale = Vector2.one;
         if (data.id != 6)
         {
@@ -37,6 +37,14 @@ public class ElementDailyQuest : PanelBase
             }
             else
             {
+                if(data == null)
+                {
+                    Debug.Log("Data = null");
+                }
+                else
+                {
+                    Debug.Log("data.AmountQuest = " + data.AmountQuest);
+                }
                 str = str.Replace("xx", data.AmountQuest.ToString());
 
                 //  str = str.Replace("xx", data.AmountQuest.ToString());

@@ -4,13 +4,11 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : UnitySingleton<TimeManager>
 {
-    public static TimeManager instance;
     public bool IsReloadAds;
     public bool isLoaded = false;
 
-    private static bool isReady = false;
     private bool isHasInternet = false;
     public bool IsHasInternet
     {
@@ -33,22 +31,7 @@ public class TimeManager : MonoBehaviour
         public int day_of_year;
     }
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            isReady = true;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            if (!isReady)
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
+ 
     public DateTime GetServerTime()
     {
         return localDateTime.AddSeconds(Time.realtimeSinceStartup);

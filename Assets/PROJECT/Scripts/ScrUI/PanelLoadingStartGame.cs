@@ -194,7 +194,10 @@ public class PanelLoadingStartGame : MonoBehaviour
                 asyncOperation.allowSceneActivation = true;
             });
         else
+        {
+            ActionHelper.ShowBanner();
             asyncOperation.allowSceneActivation = true;
+        }
     }
     #endregion
 

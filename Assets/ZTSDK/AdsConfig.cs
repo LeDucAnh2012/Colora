@@ -62,7 +62,7 @@ public class AdsConfig : MonoBehaviour
         countTimeInter.time = configData.TimeIndexInter;
         countTimeInterReward.time = configData.TimeIndexInterReward;
     }
-    public void CheckShowInter(Action<bool> callback = null)
+    public void CheckShowInter(string idAds,Action<bool> callback = null)
     {
 
         if (configData != null)
@@ -87,10 +87,10 @@ public class AdsConfig : MonoBehaviour
         countTimeAoaInter.time = 0;
         countTimeAoaInter.isCountTime = true;
         Debug.Log("configData.TimeIndexInter = " + configData.TimeIndexInter);
-        CC_Interface.instance.ShowInter(callback);
+        CC_Interface.instance.ShowInter(idAds, callback);
     }
 
-    public void CheckShowAoa(UnityAction callback = null)
+    public void CheckShowAoa(string idAds, UnityAction callback = null)
     {
         if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack || !RemoteConfig.instance.allConfigData.ShowAOA)
         {
@@ -126,7 +126,7 @@ public class AdsConfig : MonoBehaviour
         countTimeAoa.time = 0;
         countTimeAoa.isCountTime = true;
 
-        CC_Interface.instance.ShowAppOpenAd(callback);
+        CC_Interface.instance.ShowAppOpenAd(idAds,callback);
     }
 
     public void ShowBannerCollapseNow(bool isShowLoading, UnityAction callbackLoad)

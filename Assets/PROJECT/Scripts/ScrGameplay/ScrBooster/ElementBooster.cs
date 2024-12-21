@@ -106,7 +106,7 @@ public class ElementBooster : PanelBase
 
                 if (VariableSystem.FillByBomBooster <= 0)
                 {
-                    ActionHelper.ShowRewardAds("Rw_" + typeBooster.ToString(), CallBackAdsBooster);
+                    ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_OutOfBooster_211224, "Rw_" + typeBooster.ToString(), CallBackAdsBooster);
                     return;
                 }
                 isUse = !isUse;
@@ -117,7 +117,7 @@ public class ElementBooster : PanelBase
             case TypeBooster.Find:
                 if (VariableSystem.FindBooster <= 0)
                 {
-                    ActionHelper.ShowRewardAds("Rw_" + typeBooster.ToString(), CallBackAdsBooster);
+                    ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_OutOfBooster_211224, "Rw_" + typeBooster.ToString(), CallBackAdsBooster);
                     return;
                 }
                 SoundMusicManager.instance.SoundUseBooster();
@@ -138,7 +138,7 @@ public class ElementBooster : PanelBase
             case TypeBooster.Number:
                 if (VariableSystem.FillByNumBooster <= 0)
                 {
-                    ActionHelper.ShowRewardAds("Rw_" + typeBooster.ToString(), CallBackAdsBooster);
+                    ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_OutOfBooster_211224, "Rw_" + typeBooster.ToString(), CallBackAdsBooster);
                     return;
                 }
                 isUse = !isUse;
@@ -192,7 +192,7 @@ public class ElementBooster : PanelBase
         {
             boosterManager.IsOn = isUse;
             imgFrameUse.gameObject.SetActive(isUse);
-           // iconBoosterEnd.gameObject.SetActive(!isUse);
+            // iconBoosterEnd.gameObject.SetActive(!isUse);
         }
         if (isUse)
             iconBooster.transform.DOLocalRotate(new Vector3(0, 0, 30), 0.5f).From(Vector3.zero).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);

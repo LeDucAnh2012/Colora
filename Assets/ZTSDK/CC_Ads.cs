@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -11,6 +11,8 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using Singular;
+using NUnit.Framework;
+using static Unity.Burst.Intrinsics.X86.Avx;
 public enum TypeAds
 {
     Banner,
@@ -56,17 +58,14 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     public void Start()
     {
         RegisterKeyAds();
-     
-        //PlayerPrefs.DeleteAll();
-        //   StartCMP();
-        //deviceIDTest2 = SystemInfo.deviceUniqueIdentifier;
-        InitAds();
+        StartCMP();
+        deviceIDTest2 = SystemInfo.deviceUniqueIdentifier;
     }
     private void RegisterKeyAds()
     {
         // banner
 #if UNITY_ANDROID
-        _adUnitId_Banner = "ca-app-pub-7702289911487047/4627329150";
+        _adUnitId_Banner = "ca-app-pub-9912310468706838/9849030936";
 #elif UNITY_IOS
         _adUnitId_Banner = "";
 #else
@@ -119,7 +118,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     {
         if (!isLoadAds)
         {
-        Debug.Log("InitAds");
+            Debug.Log("InitAds");
             isLoadAds = true;
             // Initialize the Google Mobile Ads SDK.
             MobileAds.Initialize((InitializationStatus initStatus) =>
@@ -245,7 +244,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack)
             return;
 
-        if (    !TimeManager.instance.IsHasInternet || isLoadBanner || CC_Interface.instance.HasBanner)
+        if (!TimeManager.instance.IsHasInternet || isLoadBanner || CC_Interface.instance.HasBanner)
             return;
 
         if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
@@ -276,9 +275,9 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     /// <summary>
     /// Loads the interstitial ad.
     /// </summary>
-    public void LoadInterAds()
+    public void LoadInterAds(UnityAction callback = null)
     {
-        if (  !TimeManager.instance.IsHasInternet || isLoadInter || VariableSystem.RemoveAds)
+        if (!TimeManager.instance.IsHasInternet || isLoadInter || VariableSystem.RemoveAds)
             return;
         Debug.Log("inter loaded");
         isLoadInter = true;
@@ -304,11 +303,10 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                     isLoadInter = false;
 
                     Invoke(nameof(LoadInterAds), ActionHelper.GetTimeDelayReloadAds(ref retryAttempt_Inter));
-                    Debug.LogError("interstitial ad failed to load an ad " +
-                                   "with error : " + error);
+                    Debug.LogError("interstitial ad failed to load an ad " + "with error : " + error);
+                    callback?.Invoke();
                     return;
                 }
-
 
                 ActionHelper.LogEvent(KeyLogFirebase.LoadInter);
                 isLoadInter = false;
@@ -319,6 +317,8 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                 _interstitialAd = ad;
                 RegisterEventHandlers(_interstitialAd);
                 RegisterReloadHandler(_interstitialAd);
+
+                callback?.Invoke();
             });
     }
 
@@ -390,8 +390,24 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             LoadInterAds();
         };
     }
-    public void ShowInter(Action<bool> callback = null)
+    public void ShowInter(string idAds, Action<bool> callback = null)
     {
+        CanvasAllScene.instance.panelLoading.Show();
+
+        if (VariableSystem.IsUseIdTest)
+            CallbackLoadInter(callback);
+        else
+        {
+            _adUnitId_Inter = idAds;
+            LoadInterAds(() =>
+            {
+                CallbackLoadInter(callback);
+            });
+        }
+    }
+    private void CallbackLoadInter(Action<bool> callback = null)
+    {
+        CanvasAllScene.instance.panelLoading.Hide();
         if (_interstitialAd != null && _interstitialAd.CanShowAd())
         {
             Debug.Log("Showing interstitial ad.");
@@ -414,9 +430,9 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     /// <summary>
     /// Loads the rewarded ad.
     /// </summary>
-    public void LoadReward()
+    public void LoadReward(UnityAction callback = null)
     {
-        if ( !TimeManager.instance.IsHasInternet || isLoadReward)
+        if (!TimeManager.instance.IsHasInternet || isLoadReward)
             return;
         Debug.Log("reward loaded");
         isLoadReward = true;
@@ -443,6 +459,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                     Invoke(nameof(LoadReward), ActionHelper.GetTimeDelayReloadAds(ref retryAttempt_Reward));
                     isLoadReward = false;
                     Debug.LogError("Rewarded ad failed to load an ad " + "with error : " + error);
+                    callback?.Invoke();
                     return;
                 }
                 retryAttempt_Reward = 0;
@@ -452,13 +469,25 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                 _rewardedAd = ad;
                 RegisterEventHandlers(_rewardedAd);
                 RegisterReloadHandler(_rewardedAd);
+                callback?.Invoke();
             });
     }
-    public void ShowRewardedAd(string where = "", Action<bool> callback = null)
+    public void ShowRewardedAd(string idAds, string where = "", Action<bool> callback = null)
     {
-        const string rewardMsg =
-            "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
-
+        if (VariableSystem.IsUseIdTest)
+            CallbackLoadReward(where, callback);
+        else
+        {
+            _adUnitId_Reward = idAds;
+            LoadReward(() =>
+            {
+                CallbackLoadReward(where, callback);
+            });
+        }
+    }
+    private void CallbackLoadReward(string where = "", Action<bool> callback = null)
+    {
+        const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
         if (_rewardedAd != null && _rewardedAd.CanShowAd())
         {
             isLoadReward = false;
@@ -571,315 +600,368 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     }
     #endregion
 
-    #region ImpressionSuccess callback handler
-    void ImpressionSuccessEvent(AdValue adValue)
-    {
-
-        //{
-        //    Debug.Log("ImpressionSuccessEvent");
-
-            SingularSDK.Revenue("USD", adValue.Value / 1000000);
-        //    AdjustAdRevenue adjustAdRevenue = new AdjustAdRevenue(AdjustConfig.AdjustAdRevenueSourceIronSource);
-        //    adjustAdRevenue.setRevenue((double)impressionData.revenue, "USD");
-        //    optional fields
-        //    adjustAdRevenue.setAdRevenueNetwork(impressionData.adNetwork);
-        //    adjustAdRevenue.setAdRevenueUnit(impressionData.adUnit);
-        //    adjustAdRevenue.setAdRevenuePlacement(impressionData.placement);
-        //    track Adjust ad revenue
-        //    Adjust.trackAdRevenue(adjustAdRevenue);
-
-
-
-        //    Tracking firebase
-        //    Firebase.Analytics.Parameter[] AdParameters = {
-        //     new Firebase.Analytics.Parameter("ad_platform", "ironSource"),
-        //      new Firebase.Analytics.Parameter("ad_source", impressionData.adNetwork),
-        //      new Firebase.Analytics.Parameter("ad_unit_name", impressionData.adUnit),
-        //    new Firebase.Analytics.Parameter("ad_format", impressionData.instanceName),
-        //      new Firebase.Analytics.Parameter("currency","USD"),
-        //    new Firebase.Analytics.Parameter("value", (double)impressionData.revenue)
-        //};
-        //    Firebase.Analytics.FirebaseAnalytics.LogEvent("ad_impression", AdParameters);
-        //}
-    }
-    #endregion
 
     #region CMP
 
-    //    void StartCMP()
-    //    {
-    //        if (isCMPConsent())
-    //        {
-    //            MaxSdk.SetHasUserConsent(true);
-    //            InitAds();
-    //        }
-    //        else
-    //        {
-    //            MaxSdk.SetHasUserConsent(false);
-    //            //ResetCMP();
-    //        }
-    //    }
-    //    void OnConsentInfoUpdated(FormError consentError)
-    //    {
-    //        if (consentError != null)
-    //        {
-    //            // Handle the error.
-    //            Debug.Log(consentError);
-    //            ContinueLoading();
-    //            return;
-    //        }
-    //        // If the error is null, the consent information state was updated.
-    //        // You are now ready to check if a form is available.
-    //        ConsentForm.LoadAndShowConsentFormIfRequired((FormError formError) =>
-    //        {
-    //            if (formError != null)
-    //            {
-    //                // Consent gathering failed.
-    //                Debug.Log("consent = " + consentError);
-    //                ContinueLoading();
-    //                return;
-    //            }
-    //            // Consent has been gathered.
-    //            if (ConsentInformation.CanRequestAds())
-    //            {
-    //                if (isCMPConsent())
-    //                {
-    //                    //Request an ad.
-    //                    Debug.Log("Bool Check String:" + isCMPConsent());
-    //                    Debug.LogError("CMP: START 03");
-    //                    MaxSdk.SetHasUserConsent(true);
-    //                    ContinueLoading();
-    //                }
-    //                else
-    //                {
-    //                    Debug.Log("???");
-    //                    MaxSdk.SetHasUserConsent(false);
-    //                    ContinueLoading();
-    //                }
+    void StartCMP()
+    {
+        if (IsCMPConsent())
+            ApplyConsentSettings(ConsentStatus.Obtained);
+        else
+            ApplyConsentSettings(ConsentStatus.Required);
+    }
+    private UnityAction callbackHideCMP;
+    public void LevelShowCMP(UnityAction callback = null)
+    {
+        if (!IsCMPConsent())
+        {
+            isContinueLoading = false;
 
-    //            }
-    //            else
-    //            {
-    //                Debug.Log("=====");
-    //                MaxSdk.SetHasUserConsent(false);
-    //                ContinueLoading();
-    //            }
-    //        });
-    //    }
-    //    private void ContinueLoading()
-    //    {
-    //        //Time.timeScale = 1;
-    //        isContinueLoading = true;
-    //        CanvasAllScene.instance.panelLoading.Hide();
-    //        if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
-    //        {
-    //            isShowCMP = false;
-    //            callbackHideCMP?.Invoke();
-    //        }
-    //        InitAds();
-    //    }
-    //    UnityAction callbackHideCMP = null;
-    //    public void LevelShowCMP(UnityAction callback = null)
-    //    {
-    //        if (!isCMPConsent())
-    //        {
-    //            isContinueLoading = false;
-    //            if (ActionHelper.GetSceneCurrent() != TypeSceneCurrent.BeginScene)
-    //                CanvasAllScene.instance.panelLoading.Show();
-    //            isShowCMP = true;
-    //            callbackHideCMP = callback;
-    //            ResetCMP();
-    //        }
-    //        else
-    //        {
-    //            CanvasAllScene.instance.panelLoading.Hide();
-    //            isShowCMP = false;
-    //            callback?.Invoke();
-    //        }
-    //    }
-    //    private List<int> ConvertStringToInt(string value)
-    //    {
-    //        List<int> vs = new List<int>();
-    //        string[] bs = value.Split(',');
-    //        for (int i = 0; i < bs.Length; i++)
-    //        {
-    //            vs.Add(int.Parse(bs[i].Trim()));
-    //        }
+            isShowCMP = true;
+            callbackHideCMP = callback;
+            ResetCMP();
+        }
+        else
+        {
+            InitAds();
+            CanvasAllScene.instance.panelLoading.Hide();
+            isShowCMP = false;
+            callback?.Invoke();
+        }
+    }
 
-    //        return vs;
-    //    }
 
-    //    /// <summary>
-    //    /// If user not accept consent, reset consent and show
-    //    /// </summary>
-    //    public void ResetCMP()
-    //    {
-    //        Debug.Log("reset cmp");
-    //        ConsentInformation.Reset();
-    //        var debugSettings = new ConsentDebugSettings
-    //        {
-    //            // Geography appears as in EEA for debug devices.
-    //            DebugGeography = DebugGeography.EEA,
-    //            TestDeviceHashedIds = new List<string>
-    //        {
-    //            deviceIDTest2
-    //        }
-    //        };
-    //        ConsentRequestParameters request = new ConsentRequestParameters
-    //        {
-    //            TagForUnderAgeOfConsent = false,
-    //            ConsentDebugSettings = debugSettings,
-    //        };
-    //        ConsentInformation.Update(request, OnConsentInfoUpdated);
-    //    }
 
-    //    /// <summary>
-    //    ///Get ID consent on Android device
-    //    /// </summary>
-    //    public string GetID()
+    private void ContinueLoading()
+    {
+        //Time.timeScale = 1;
+        isContinueLoading = true;
+        CanvasAllScene.instance.panelLoading.Hide();
+        if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
+            isShowCMP = false;
+        callbackHideCMP?.Invoke();
+        //   InitAds();
+    }
+
+
+
+
+
+    void ApplyConsentSettings(ConsentStatus status)
+    {
+        RequestConfiguration requestConfiguration;
+
+        switch (status)
+        {
+            // Trạng thái mặc định, chưa rõ người dùng đã chấp nhận hay từ chối chính sách.Có thể xảy ra khi:
+
+            // Bạn chưa hiển thị cửa sổ đồng ý(consent form).
+            // Người dùng chưa thực hiện bất kỳ hành động nào.
+
+            case ConsentStatus.Unknown:
+                Debug.Log("Consent status is Unknown. Applying default settings.");
+                requestConfiguration = new RequestConfiguration
+                {
+                    TagForChildDirectedTreatment = TagForChildDirectedTreatment.Unspecified,
+                    TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.Unspecified
+                };
+                break;
+
+            // Trạng thái này biểu thị rằng không cần thu thập sự đồng ý từ người dùng, có thể vì:
+
+            // Người dùng không nằm trong khu vực chịu ảnh hưởng của các quy định như GDPR(ví dụ: ngoài EU).
+            // Chính sách ứng dụng của bạn không yêu cầu thông tin cá nhân.
+
+            case ConsentStatus.NotRequired:
+                Debug.Log("Consent is not required. No personalized ads needed.");
+                requestConfiguration = new RequestConfiguration
+                {
+                    TagForChildDirectedTreatment = TagForChildDirectedTreatment.False,
+                    TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.False
+                };
+                break;
+            // Trạng thái này nghĩa là ứng dụng yêu cầu sự đồng ý của người dùng, nhưng người dùng vẫn chưa cung cấp quyết định(đồng ý hoặc từ chối).
+            case ConsentStatus.Required:
+                Debug.Log("Consent is required. Setting appropriate flags.");
+                requestConfiguration = new RequestConfiguration
+                {
+                    TagForChildDirectedTreatment = TagForChildDirectedTreatment.True,
+                    TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.True
+                };
+                break;
+
+            // Trạng thái này được đặt khi:
+
+            // Người dùng đồng ý với việc xử lý dữ liệu cá nhân(ví dụ: cho phép quảng cáo cá nhân hóa hoặc phân tích dữ liệu).
+            // Cửa sổ CMP(Consent Management Platform) được hiển thị, và người dùng đã chọn chấp nhận các điều khoản.
+
+            case ConsentStatus.Obtained:
+                Debug.Log("Consent obtained. Enabling personalized ads.");
+                requestConfiguration = new RequestConfiguration
+                {
+                    TagForChildDirectedTreatment = TagForChildDirectedTreatment.False,
+                    TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.False
+                };
+                break;
+
+            default:
+                Debug.LogWarning("Unexpected consent status. Applying default settings.");
+                requestConfiguration = new RequestConfiguration
+                {
+                    TagForChildDirectedTreatment = TagForChildDirectedTreatment.Unspecified,
+                    TagForUnderAgeOfConsent = TagForUnderAgeOfConsent.Unspecified
+                };
+                break;
+        }
+
+        // Apply the request configuration to Mobile Ads
+        MobileAds.SetRequestConfiguration(requestConfiguration);
+    }
+
+
+    #endregion
+
+    public static int GetInt(string key, int defaultValue)
+    {
+        return GetValue<int>(key, defaultValue, "getInt");
+    }
+
+    public static float GetFloat(string key, float defaultValue)
+    {
+        return GetValue<float>(key, defaultValue, "getFloat");
+    }
+
+    public static string GetString(string key, string defaultValue)
+    {
+        return GetValue<string>(key, defaultValue, "getString");
+    }
+
+    private static T GetValue<T>(string key, T defaultValue, string methodName)
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                using (var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+                {
+                    string packageName = activity.Call<string>("getPackageName");
+                    using (var prefs = activity.Call<AndroidJavaObject>("getSharedPreferences", packageName + "_preferences", 0))
+                    {
+                        return prefs.Call<T>(methodName, key, defaultValue);
+                    }
+                }
+            }
+        }
+
+        return defaultValue;
+    }
+
+    // Number:
+    // 1 - GDPR applies in current context
+    // 0 - GDPR does not apply in current context
+    // Unset - undetermined (default before initialization)
+    public static int GetGDPRApplicability()
+    {
+        return GetInt("IABTCF_gdprApplies", -1); // Default to -1 (undetermined) if not set
+    }
+    /// <summary>
+    /// Check if user accepted consent
+    /// </summary>
+    bool IsCMPConsent()
+    {
+        //Debug.LogError("isCMPConsent CanShowAds: " + CanShowAds() + " ----- CanShowPersonalizedAds: " + CanShowPersonalizedAds());
+        if (CanShowAds() || CanShowPersonalizedAds())
+        {
+            string CMPString = GetString("IABTCF_AddtlConsent", "NO");
+#if UNITY_IPHONE
+            CMPString = PlayerPrefs.GetString("IABTCF_AddtlConsent", "NO");
+#endif
+            if (CMPString != null)
+            {
+                if (CMPString.Contains("2878"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    private const string PURPOSE_CONSENT_KEY = "IABTCF_PurposeConsents";
+    private const string VENDOR_CONSENT_KEY = "IABTCF_VendorConsents";
+    private const string VENDOR_LI_KEY = "IABTCF_VendorLegitimateInterests";
+    private const string PURPOSE_LI_KEY = "IABTCF_PurposeLegitimateInterests";
+    /// <summary>
+    ///Get ID consent on Android device
+    /// </summary>
+    //    public string GetString(string stringGet, string defaultValue = "")
     //    {
+    //#if UNITY_EDITOR
+    //        return defaultValue;
+
+    //#else
     //        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
     //        AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
     //        AndroidJavaClass preferenceManagerClass = new AndroidJavaClass("android.preference.PreferenceManager");
     //        AndroidJavaObject sharedPreferences = preferenceManagerClass.CallStatic<AndroidJavaObject>("getDefaultSharedPreferences", currentActivity);
-    //        return sharedPreferences.Call<string>("getString", "IABTCF_AddtlConsent", "");
-    //    }
-
-    //    ///// <summary>
-    //    ///// Check if user accepted consent
-    //    ///// </summary>
-    //    //bool isCMPConsent()
-    //    //{
-    //    //    if (Application.platform == RuntimePlatform.Android)
-    //    //    {
-    //    //        string CMPString = GetID();
-    //    //        Debug.Log("CMP String = " + CMPString);
-    //    //        if (CMPString.Length >= 4 && CMPString.Contains("2878"))
-    //    //        {
-    //    //            Debug.Log("vao true");
-    //    //            return true;
-    //    //        }
-    //    //        else
-    //    //        {
-    //    //            Debug.Log("vao false");
-    //    //            return false;
-    //    //        }
-    //    //    }
-    //    //    else if (Application.platform == RuntimePlatform.IPhonePlayer)
-    //    //    {
-
-    //    //        string CMPString = PlayerPrefs.GetString("IABTCF_AddtlConsent", "");
-    //    //        Debug.LogError("CMPString: " + CMPString);
-    //    //        if (CMPString.Length >= 4 && CMPString.Contains("2878"))
-    //    //        {
-    //    //            return true;
-    //    //        }
-    //    //        else
-    //    //        {
-    //    //            return false;
-    //    //        }
-    //    //    }
-    //    //    else
-    //    //    {
-    //    //        return true;
-    //    //    }
-    //    //}
-
-    //    bool isCMPConsent()
-    //    {
-    //        if (ActionHelper.IsEditor()) return true;
-    //        //Debug.LogError("isCMPConsent CanShowAds: " + CanShowAds() + " ----- CanShowPersonalizedAds: " + CanShowPersonalizedAds());
-    //        if (CanShowAds() || CanShowPersonalizedAds())
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-
-
-    //    private const string PURPOSE_CONSENT_KEY = "IABTCF_PurposeConsents";
-    //    private const string VENDOR_CONSENT_KEY = "IABTCF_VendorConsents";
-    //    private const string VENDOR_LI_KEY = "IABTCF_VendorLegitimateInterests";
-    //    private const string PURPOSE_LI_KEY = "IABTCF_PurposeLegitimateInterests";
-    //    // Check if ads can be shown
-    //    bool CanShowAds()
-    //    {
-    //        string purposeConsent = "";
-    //        string vendorConsent = "";
-    //        string vendorLI = "";
-    //        string purposeLI = "";
-    //#if UNITY_IPHONE
-    //            purposeConsent = PlayerPrefs.GetString(PURPOSE_CONSENT_KEY, "");
-    //            vendorConsent = PlayerPrefs.GetString(VENDOR_CONSENT_KEY, "");
-    //            vendorLI = PlayerPrefs.GetString(VENDOR_LI_KEY, "");
-    //            purposeLI = PlayerPrefs.GetString(PURPOSE_LI_KEY, "");
-    //#elif UNITY_ANDROID
-    //        purposeConsent = GT.Utils.PlayerPrefsNative.GetString(PURPOSE_CONSENT_KEY, "");
-    //        vendorConsent = GT.Utils.PlayerPrefsNative.GetString(VENDOR_CONSENT_KEY, "");
-    //        vendorLI = GT.Utils.PlayerPrefsNative.GetString(VENDOR_LI_KEY, "");
-    //        purposeLI = GT.Utils.PlayerPrefsNative.GetString(PURPOSE_LI_KEY, "");
+    //        return sharedPreferences.Call<string>("getString", stringGet, defaultValue);
     //#endif
-
-    //        int googleId = 755;
-    //        bool hasGoogleVendorConsent = HasAttribute(vendorConsent, googleId);
-    //        bool hasGoogleVendorLI = HasAttribute(vendorLI, googleId);
-
-    //        // Minimum required for at least non-personalized ads
-    //        return HasConsentFor(new List<int> { 1 }, purposeConsent, hasGoogleVendorConsent)
-    //            && HasConsentOrLegitimateInterestFor(new List<int> { 2, 7, 9, 10 }, purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI);
     //    }
+    // Check if ads can be shown
+    bool CanShowAds()
+    {
+        string purposeConsent = "";
+        string vendorConsent = "";
+        string vendorLI = "";
+        string purposeLI = "";
+#if UNITY_IPHONE
+        purposeConsent = PlayerPrefs.GetString(PURPOSE_CONSENT_KEY, "");
+        vendorConsent = PlayerPrefs.GetString(VENDOR_CONSENT_KEY, "");
+        vendorLI = PlayerPrefs.GetString(VENDOR_LI_KEY, "");
+        purposeLI = PlayerPrefs.GetString(PURPOSE_LI_KEY, "");
+#elif UNITY_ANDROID
+        purposeConsent = GetString(PURPOSE_CONSENT_KEY, "");
+        vendorConsent = GetString(VENDOR_CONSENT_KEY, "");
+        vendorLI = GetString(VENDOR_LI_KEY, "");
+        purposeLI = GetString(PURPOSE_LI_KEY, "");
+#endif
 
-    //    // Check if personalized ads can be shown
-    //    bool CanShowPersonalizedAds()
-    //    {
-    //        string purposeConsent = "";
-    //        string vendorConsent = "";
-    //        string vendorLI = "";
-    //        string purposeLI = "";
+        int googleId = 755;
+        bool hasGoogleVendorConsent = HasAttribute(vendorConsent, googleId);
+        bool hasGoogleVendorLI = HasAttribute(vendorLI, googleId);
 
-    //#if UNITY_IPHONE
-    //            purposeConsent = PlayerPrefs.GetString(PURPOSE_CONSENT_KEY, "");
-    //            vendorConsent = PlayerPrefs.GetString(VENDOR_CONSENT_KEY, "");
-    //            vendorLI = PlayerPrefs.GetString(VENDOR_LI_KEY, "");
-    //            purposeLI = PlayerPrefs.GetString(PURPOSE_LI_KEY, "");
-    //#elif UNITY_ANDROID
-    //        purposeConsent = PlayerPrefs.GetString(PURPOSE_CONSENT_KEY, "");
-    //        vendorConsent = PlayerPrefs.GetString(VENDOR_CONSENT_KEY, "");
-    //        vendorLI = PlayerPrefs.GetString(VENDOR_LI_KEY, "");
-    //        purposeLI = PlayerPrefs.GetString(PURPOSE_LI_KEY, "");
-    //#endif
-    //        int googleId = 755;
-    //        bool hasGoogleVendorConsent = HasAttribute(vendorConsent, googleId);
-    //        bool hasGoogleVendorLI = HasAttribute(vendorLI, googleId);
+        // Minimum required for at least non-personalized ads
+        return HasConsentFor(new List<int> { 1 }, purposeConsent, hasGoogleVendorConsent)
+            && HasConsentOrLegitimateInterestFor(new List<int> { 2, 7, 9, 10 }, purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI);
+    }
 
-    //        return HasConsentFor(new List<int> { 1, 3, 4 }, purposeConsent, hasGoogleVendorConsent)
-    //            && HasConsentOrLegitimateInterestFor(new List<int> { 2, 7, 9, 10 }, purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI);
-    //    }
+    // Check if personalized ads can be shown
+    bool CanShowPersonalizedAds()
+    {
+        string purposeConsent = "";
+        string vendorConsent = "";
+        string vendorLI = "";
+        string purposeLI = "";
 
-    //    // Check if a binary string has a "1" at position "index" (1-based)
-    //    bool HasAttribute(string input, int index)
-    //    {
-    //        return input.Length >= index && input[index - 1] == '1';
-    //    }
+#if UNITY_IPHONE
+        purposeConsent = PlayerPrefs.GetString(PURPOSE_CONSENT_KEY, "");
+        vendorConsent = PlayerPrefs.GetString(VENDOR_CONSENT_KEY, "");
+        vendorLI = PlayerPrefs.GetString(VENDOR_LI_KEY, "");
+        purposeLI = PlayerPrefs.GetString(PURPOSE_LI_KEY, "");
+#elif UNITY_ANDROID
+        purposeConsent = GetString(PURPOSE_CONSENT_KEY, "");
+        vendorConsent = GetString(VENDOR_CONSENT_KEY, "");
+        vendorLI = GetString(VENDOR_LI_KEY, "");
+        purposeLI = GetString(PURPOSE_LI_KEY, "");
+#endif
+        int googleId = 755;
+        bool hasGoogleVendorConsent = HasAttribute(vendorConsent, googleId);
+        bool hasGoogleVendorLI = HasAttribute(vendorLI, googleId);
 
-    //    // Check if consent is given for a list of purposes
-    //    bool HasConsentFor(List<int> purposes, string purposeConsent, bool hasVendorConsent)
-    //    {
-    //        return purposes.All(p => HasAttribute(purposeConsent, p)) && hasVendorConsent;
-    //    }
+        return HasConsentFor(new List<int> { 1, 3, 4 }, purposeConsent, hasGoogleVendorConsent)
+            && HasConsentOrLegitimateInterestFor(new List<int> { 2, 7, 9, 10 }, purposeConsent, purposeLI, hasGoogleVendorConsent, hasGoogleVendorLI);
+    }
 
-    //    // Check if a vendor either has consent or legitimate interest for a list of purposes
-    //    bool HasConsentOrLegitimateInterestFor(List<int> purposes, string purposeConsent, string purposeLI, bool hasVendorConsent, bool hasVendorLI)
-    //    {
-    //        return purposes.All(p =>
-    //            (HasAttribute(purposeLI, p) && hasVendorLI) ||
-    //            (HasAttribute(purposeConsent, p) && hasVendorConsent)
-    //        );
-    //    }
+    // Check if a binary string has a "1" at position "index" (1-based)
+    bool HasAttribute(string input, int index)
+    {
+        return input.Length >= index && input[index - 1] == '1';
+    }
 
+    // Check if consent is given for a list of purposes
+    bool HasConsentFor(List<int> purposes, string purposeConsent, bool hasVendorConsent)
+    {
+        return purposes.All(p => HasAttribute(purposeConsent, p)) && hasVendorConsent;
+    }
 
-    #endregion
+    // Check if a vendor either has consent or legitimate interest for a list of purposes
+    bool HasConsentOrLegitimateInterestFor(List<int> purposes, string purposeConsent, string purposeLI, bool hasVendorConsent, bool hasVendorLI)
+    {
+        return purposes.All(p =>
+            (HasAttribute(purposeLI, p) && hasVendorLI) ||
+            (HasAttribute(purposeConsent, p) && hasVendorConsent)
+        );
+    }
+    public void CheckConsentReset()
+    {
+        Debug.Log("Check User EU:" + GetGDPRApplicability());
+        if (GetGDPRApplicability() == 1)
+        {
+            if (!IsCMPConsent())
+            {
+                if (Time.time - timeCheckCMPReset > 30)
+                {
+                    timeCheckCMPReset = Time.time;
+                    ResetCMP();
+                }
+
+            }
+        }
+    }
+    float timeCheckCMPReset;
+
+    public void ResetCMP()
+    {
+        Time.timeScale = 0;
+        ConsentInformation.Reset();
+        ConsentRequestParameters request = new ConsentRequestParameters
+        {
+            TagForUnderAgeOfConsent = false,
+        };
+        ConsentInformation.Update(request, OnConsentInfoUpdated);
+    }
+    void OnConsentInfoUpdated(FormError consentError)
+    {
+        if (consentError != null)
+        {
+            // Handle the error.
+            Time.timeScale = 1;
+            //InitAds();
+            Debug.LogError(consentError);
+            ContinueLoading();
+            return;
+        }
+        CanvasAllScene.instance.panelLoading.Show();
+        // If the error is null, the consent information state was updated.
+        // You are now ready to check if a form is available.
+        ConsentForm.LoadAndShowConsentFormIfRequired((FormError formError) =>
+        {
+            if (formError != null)
+            {
+                // Consent gathering failed.
+                ContinueLoading();
+                Time.timeScale = 1;
+                //InitAds();
+                UnityEngine.Debug.LogError(consentError);
+
+                return;
+            }
+            ContinueLoading();
+            Time.timeScale = 1;
+            //Request an ad.
+            if (IsCMPConsent())
+            {
+                ApplyConsentSettings(ConsentStatus.Obtained);
+            }
+            else
+            {
+                ApplyConsentSettings(ConsentStatus.Required);
+            }
+            InitAds();
+
+        });
+    }
 }

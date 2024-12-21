@@ -34,6 +34,7 @@ public class CC_LogFirebase : MonoBehaviour
     }
     public void InitializeFirebaseLogEvent()
     {
+        Debug.Log("init firebase = " + firebaseInitialized);
         FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
         // Set the user ID.
         FirebaseAnalytics.SetUserId(SystemInfo.deviceUniqueIdentifier);

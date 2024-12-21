@@ -387,6 +387,24 @@ public class DataAllShape : ScriptableObject
 
     //=============================================================================
 
+    private int row = 0;
+    private int collum = 0;
+
+    private int countRow = 0;
+    private int countCollum = 0;
+    private string str = "";
+
+    private ShapeInfo shapeInfo = new ShapeInfo();
+    private bool isDefault = true;
+    private int countShape = 0;
+
+
+    public bool isWriteData = true;
+
+    #region [ GenData ]
+
+    public bool isGenData;
+    [ShowIf("isGenData",true)]
     [Button]
     private void SetDataTopicInfo()
     {
@@ -417,80 +435,7 @@ public class DataAllShape : ScriptableObject
             }
         }
     }
-    public string level;
-    //  public TypeUnlock typeUnlock;
-    public TypeTopic typeTopic;
-
-    [Button]
-    void SetTypeTopic()
-    {
-        var list = new List<int>();
-        string s = "";
-        for (int i = 0; i < level.Length; i++)
-        {
-
-            if (level[i] == ',')
-            {
-                var val = int.Parse(s);
-                list.Add(val);
-                s = "";
-            }
-            else
-            {
-                s += level[i];
-            }
-        }
-        for (int i = 0; i < list.Count; i++)
-        {
-            GetShapeInfo(list[i]).typeTopic = typeTopic;
-            Debug.Log("level " + list[i]);
-        }
-        Debug.Log("DONE");
-    }
-
-
-  //  [Button]
-    void LoadListMap()
-    {
-        int id = 0;
-        var listText = Resources.LoadAll<TextAsset>("TextAssets/TextDataShape/").ToList();
-        Debug.Log("count= " + listText.Count);
-        foreach (var shapeinfo in listText)
-        {
-            //shapeInfo.textureGray = listtexture2d[id];
-            //shapeInfo.idshape = id + 1;
-
-            //shapeInfo.listmap.clear();
-            //shapeInfo.listmapnocolor.clear();
-
-            //shapeInfo.listcolor.clear();
-            //shapeInfo.listnocolor.clear();
-
-            //shapeInfo.txtdata = resources.load<textasset>("textassets/texdatashape/texcolor/lv_" + getlistshapeinfo()[id].idshape + "_color");
-            //shapeInfo.txtdatanocolor = resources.load<textasset>("textassets/texdatashape/texcolor/lv_" + getlistshapeinfo()[id].idshape + "_nocolor");
-
-            //loaddatacolorandshape(shapeInfo.txtdata.tostring().tochararray(), ref shapeInfo.listcolor, ref shapeInfo.listmap);
-            //loaddatacolorandshape(shapeInfo.txtdatanocolor.tostring().tochararray(), ref shapeInfo.listnocolor, ref shapeInfo.listmapnocolor);
-
-            //shapeInfo.width = shapeInfo.listmap[0];
-            //shapeInfo.height = shapeInfo.listmap[1];
-
-            //shapeInfo.listmap.removeat(0);
-            //shapeInfo.listmap.removeat(0);
-
-            //shapeInfo.listmapnocolor.removeat(0);
-            //shapeInfo.listmapnocolor.removeat(0);
-            //id++;
-        }
-        Debug.Log("done");
-    }
-
-    private int row = 0;
-    private int collum = 0;
-
-    private int countRow = 0;
-    private int countCollum = 0;
-    private string str = "";
+   
     private void LoadDataColorAndShape(char[] arrChar, ref List<Color> color, ref List<int> listMap)
     {
         row = 0;
@@ -574,8 +519,8 @@ public class DataAllShape : ScriptableObject
             }
         }
     }
-
-
+   
+    [ShowIf("isGenData", true)]
     [Button]
     void Render()
     {
@@ -590,7 +535,7 @@ public class DataAllShape : ScriptableObject
         }
 
     }
-    public bool isWriteData = true;
+
     private void GeneratePixelArt(Texture2D sourceImage)
     {
         int count = -1;
@@ -683,6 +628,8 @@ public class DataAllShape : ScriptableObject
 
 
     }
+
+    [ShowIf("isGenData", true)]
     [Button]
     private void AddData()
     {
@@ -701,7 +648,7 @@ public class DataAllShape : ScriptableObject
 
                 shapeInfo.listColor = new List<Color>();
                 shapeInfo.listMap = new List<int>();
-       
+
 
 
                 shapeInfo.typeTopic = GetNameTopic(sourceImage);
@@ -738,9 +685,6 @@ public class DataAllShape : ScriptableObject
             }
         }
     }
-    private ShapeInfo shapeInfo = new ShapeInfo();
-    private bool isDefault = true;
-    public int countShape = 0;
 
     private bool CheckHasTypeTopic(TypeTopic type)
     {
@@ -753,6 +697,7 @@ public class DataAllShape : ScriptableObject
         }
         return false;
     }
+
     private TypeTopic GetNameTopic(Texture2D texture)
     {
         var name = texture.name;
@@ -775,4 +720,64 @@ public class DataAllShape : ScriptableObject
         return result;
     }
 
+    #endregion
+
+    public bool isFixArt;
+    [ShowIf("isFixArt", true)] public int indexShape;
+    [ShowIf("isFixArt", true)] public Texture2D sprDefault;
+    [ShowIf("isFixArt", true)] public Texture2D sprGray;
+    [ShowIf("isFixArt", true)]
+    [Button]
+    void FixArt()
+    {
+        GeneratePixelArt(sprDefault);
+        GeneratePixelArt(sprGray);
+
+        foreach (var shapeInfo in listShapeInfo)
+            if (shapeInfo.indexShape == indexShape)
+            {
+                shapeInfo.textureDefault = sprDefault;
+                shapeInfo.indexShape = indexShape;
+                shapeInfo.nameShape = sprDefault.name;
+
+                shapeInfo.listColor = new List<Color>();
+                shapeInfo.listMap = new List<int>();
+
+
+
+                shapeInfo.typeTopic = GetNameTopic(sprDefault);
+                shapeInfo.txtDataDefault = Resources.Load<TextAsset>("TextAssets/TextDataShape/" + sprDefault.name);
+
+                shapeInfo.listColor= new List<Color>();
+                shapeInfo.listMap = new List<int>();
+                shapeInfo.listNoColor = new List<Color>();
+                shapeInfo.listMapNoColor = new List<int>();
+
+                LoadDataColorAndShape(shapeInfo.txtDataDefault.ToString().ToCharArray(), ref shapeInfo.listColor, ref shapeInfo.listMap);
+
+                shapeInfo.width = shapeInfo.listMap[0];
+                shapeInfo.height = shapeInfo.listMap[1];
+
+                shapeInfo.listMap.RemoveAt(0);
+                shapeInfo.listMap.RemoveAt(0);
+
+
+                shapeInfo.textureGray = sprGray;
+                shapeInfo.txtDataGray = Resources.Load<TextAsset>("TextAssets/TextDataShape/" + sprGray.name);
+
+
+                shapeInfo.listNoColor = new List<Color>();
+                shapeInfo.listMapNoColor = new List<int>();
+
+                if (shapeInfo == null)
+                {
+                    Debug.Log("VCL");
+                }
+                LoadDataColorAndShape(shapeInfo.txtDataGray.ToString().ToCharArray(), ref shapeInfo.listNoColor, ref shapeInfo.listMapNoColor);
+                shapeInfo.listMapNoColor.RemoveAt(0);
+                shapeInfo.listMapNoColor.RemoveAt(0);
+                break;
+            }
+        Debug.Log("fix done");
+    }
 }

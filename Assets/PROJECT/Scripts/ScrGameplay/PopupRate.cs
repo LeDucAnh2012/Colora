@@ -2,25 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public class PopupRate : PanelBase
 {
     [SerializeField] private List<GameObject> listStar;
     [SerializeField] private GameObject imgHand;
-
+    [Button]
     public void ShowPopup()
     {
         base.Show();
-        SoundShowPopup();
+      //  SoundShowPopup();
         if (IE_SHOW_STAR != null)
         {
             StopCoroutine(IE_SHOW_STAR);
             IE_SHOW_STAR = null;
         }
-
-        GameObject g = listStar[^1];
-        g.SetActive(true);
+        imgHand.transform.DOLocalMove(Vector2.zero,0.5f).SetEase(Ease.InQuart).SetLoops(-1,LoopType.Yoyo);
         IE_SHOW_STAR = IE_ShowStar();
         StartCoroutine(IE_SHOW_STAR);
     }

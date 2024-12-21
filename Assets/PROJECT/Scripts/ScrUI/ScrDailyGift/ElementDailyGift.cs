@@ -24,6 +24,7 @@ public class ElementDailyGift : PanelBase
     {
         SoundClickButton();
         VariableSystem.IsCollect = true;
+        VariableSystem.IsCollectX2 = true;
         homeUIManager.panelDailyGift.Collect(1);
     }
     public void OnClickClaimX2()

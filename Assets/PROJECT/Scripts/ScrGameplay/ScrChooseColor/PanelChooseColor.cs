@@ -126,7 +126,7 @@ public class PanelChooseColor : PanelBase
         if (gameplayController.typePlayMode == TypePlayMode.Normal)
         {
             if (!shapeInfo.IsUnlockEffect)
-                ActionHelper.ShowRewardAds("Rw_UnlockEffect_" + shapeInfo.nameShape, OnEffect);
+                ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_ShowPicEffect_211224,"Rw_UnlockEffect_" + shapeInfo.nameShape, OnEffect);
             else
                 OnEffect(true);
         }

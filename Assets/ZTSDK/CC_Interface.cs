@@ -34,10 +34,10 @@ public class CC_Interface : MonoBehaviour
         if (state == AppState.Foreground)
         {
             if (IsLaunchAoa && !ActionHelper.IsEditor())
-                AdsConfig.instance.CheckShowAoa();
+                AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Resume_211224);
         }
     }
-    public void ShowAppOpenAd(UnityAction callback)
+    public void ShowAppOpenAd(string idAds,UnityAction callback)
     {
         if (IsShowingAd)
         {
@@ -47,13 +47,13 @@ public class CC_Interface : MonoBehaviour
         }
         Debug.Log("AOA return IsAdAvailable " + AppOpenAdsManager.instance.IsAdAvailable);
         if (AppOpenAdsManager.instance.IsAdAvailable)
-            AppOpenAdsManager.instance.ShowAppOpenAd(callback);
+            AppOpenAdsManager.instance.ShowAppOpenAd(idAds,callback);
 
     }
     #endregion
 
     #region Reward
-    public void ShowReward(string where = "", Action<bool> callback = null)
+    public void ShowReward(string idAds,string where = "", Action<bool> callback = null)
     {
         if (!TimeManager.instance.IsHasInternet)
         {
@@ -65,23 +65,23 @@ public class CC_Interface : MonoBehaviour
         else
         {
             // show loading
-            StartCoroutine(WaitForRewardVideo());
+            StartCoroutine(WaitForRewardVideo(idAds));
         }
 
-        IEnumerator WaitForRewardVideo()
+        IEnumerator WaitForRewardVideo(string idAds)
         {
             CanvasAllScene.instance.objLoading.Show();
 
             Debug.Log("loading in 1s");
             yield return new WaitForSecondsRealtime(1f);
             CanvasAllScene.instance.objLoading.Hide();
-            CC_Ads.instance.ShowRewardedAd(where,  callback);
+            CC_Ads.instance.ShowRewardedAd(idAds,where,  callback);
         }
     }
     #endregion
 
     #region Inter
-    public void ShowInter(Action<bool> callback = null)
+    public void ShowInter(string idAds, Action<bool> callback = null)
     {
         // callback?.Invoke();
         if (CC_Ads.instance == null)
@@ -90,7 +90,7 @@ public class CC_Interface : MonoBehaviour
             callback?.Invoke(false);
         }
         else
-            CC_Ads.instance.ShowInter(callback);
+            CC_Ads.instance.ShowInter(idAds,callback);
     }
     #endregion
 

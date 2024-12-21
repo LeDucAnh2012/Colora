@@ -57,11 +57,10 @@ public class GameplayController : MonoBehaviour
     }
     private void ShowLoad()
     {
-        if (RemoteConfig.instance.allConfigData.BannerCollapInGameplay && !VariableSystem.IsShowBannerCollapInGameplay)
+        if (RemoteConfig.instance.allConfigData.BannerCollapInGameplay )
         {
             if (DataAllShape.GetCountPicDone() != 0)
             {
-                VariableSystem.IsShowBannerCollapInGameplay = true;
                 CanvasAllScene.instance.panelLoading.LoadingProgressReal(TypeSceneCurrent.GameplayScene.ToString(), true);
                 ActionHelper.ShowBannerCollapse(false, () =>
                 {

@@ -159,8 +159,6 @@ public class PanelDailyQuest : PanelBase
             homeUIManager.panelLevel.LoadLevel(typeTopic, idShape);
             Hide();
         }
-        else
-            ActionHelper.CheckShowInter();
 
         panelGift.SetActive(false);
     }

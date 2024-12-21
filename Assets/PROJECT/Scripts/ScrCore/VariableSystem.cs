@@ -428,8 +428,4 @@ public static class VariableSystem
     }
     #endregion
 
-    #region Remote
-    public static bool IsShowBannerCollapInFrameBG = false;
-    public static bool IsShowBannerCollapInGameplay = false;
-    #endregion
 }

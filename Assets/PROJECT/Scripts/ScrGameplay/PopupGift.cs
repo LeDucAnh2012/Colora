@@ -66,7 +66,7 @@ public class PopupGift : PanelBase
     public override void Hide()
     {
         if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.GameplayScene )
-            ActionHelper.CheckShowInter((bool isShowCompleted) =>
+            ActionHelper.CheckShowInter(KeyLogFirebase.Colora_INT_HideGiftPopup_211224,(bool isShowCompleted) =>
             {
                 canvasAllScene.popupGetGift.ShowPopup(listSprite, listStr, listTypeBooster, callback, isShowCompleted);
                 base.Hide();

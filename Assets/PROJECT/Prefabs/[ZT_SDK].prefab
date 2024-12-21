@@ -32,7 +32,6 @@ Transform:
   - {fileID: 2011418086028578743}
   - {fileID: 778615160340622433}
   - {fileID: 3547268184685633374}
-  - {fileID: 3846097059843727002}
   - {fileID: 545459261247428116}
   - {fileID: 8278602495322732307}
   - {fileID: 7539813495488253828}
@@ -132,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idProductIAP:
-  - idProd: com.colora.spranky.horror.sprunki.beat.coloring.game
+  - idProd: com.colora.spranky.horror.sprunki.beat.coloring.removeads
     idAndroid: 1
     idIOS: 1
     type: 1
@@ -227,50 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _adUnitId: ca-app-pub-7702289911487047/8371133042
---- !u!1 &6315832862841762839
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3846097059843727002}
-  - component: {fileID: 1922979322693509007}
-  m_Layer: 0
-  m_Name: CC_Notify
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3846097059843727002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6315832862841762839}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4201441189425735658}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1922979322693509007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6315832862841762839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eb54cd571fc90b429b616a68bb45ecd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6513236011764871292
 GameObject:
   m_ObjectHideFlags: 0

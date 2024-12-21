@@ -7,7 +7,7 @@ public class PanelDailyGift : PanelBase
 {
     [SerializeField] private List<ElementDailyGift> listElementDailyGift = new List<ElementDailyGift>();
     private int idEleReceiving = -1;
-
+    public GameObject imgNoti;
     public override void Show()
     {
         base.Show();
@@ -15,7 +15,7 @@ public class PanelDailyGift : PanelBase
     }
     public void InitData()
     {
-
+        imgNoti.gameObject.SetActive(false);
         idEleReceiving = -1;
 
         for (int i = 0; i < listElementDailyGift.Count; i++)
@@ -29,12 +29,14 @@ public class PanelDailyGift : PanelBase
                 {
                     idEleReceiving = ele.id;
                     ele.Receiving();
+                    imgNoti.gameObject.SetActive(true);
                 }
 
                 if (!VariableSystem.IsCollect)
                 {
                     idEleReceiving = ele.id;
                     ele.Receiving();
+                    imgNoti.gameObject.SetActive(true);
                 }
                 else
                 {

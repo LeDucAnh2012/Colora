@@ -138,7 +138,7 @@ public class GameplayUIManager : MonoBehaviour
     }
     public void OnClickBack()
     {
-        ActionHelper.CheckShowInter((bool isShowCompleted) =>
+        ActionHelper.CheckShowInter(KeyLogFirebase.Colora_INT_BackHome_211224,(bool isShowCompleted) =>
         {
             StartCoroutine(IE_BackHome());
         });
@@ -175,9 +175,8 @@ public class GameplayUIManager : MonoBehaviour
         panelChooseFrameBG.InitData();
         gridButton.gameObject.SetActive(false);
 
-        if (RemoteConfig.instance.allConfigData.BannerCollapInFrameBG && !VariableSystem.IsShowBannerCollapInFrameBG)
+        if (RemoteConfig.instance.allConfigData.BannerCollapInFrameBG)
         {
-            VariableSystem.IsShowBannerCollapInFrameBG = true;
             ActionHelper.ShowBannerCollapse(true, () =>
             {
                 ShowPanelChooseFrame();
@@ -193,7 +192,7 @@ public class GameplayUIManager : MonoBehaviour
         gridButton.gameObject.SetActive(true);
         btnBack.gameObject.SetActive(true);
 
-     
+        popupRate.ShowPopup();
 
         if (VariableSystem.CountShowRate == 0 && !VariableSystem.IsRate)
         {
@@ -209,14 +208,14 @@ public class GameplayUIManager : MonoBehaviour
         else
             levelLoader.LoadLevel(GameplayController.instance.textureMetadata, GameplayController.instance.texture);
     }
-
     public void ShowPanelChooseFrame()
     {
         zoomInZoomOut.enabled = false;
         zoomInZoomOut.SetSizeAndPosCam(new Vector3(0, -14, -10));
         levelLoader.SetFrameBG();
         progressPainting.Hide();
-
+        Debug.Log("Set color");
+        Camera.main.backgroundColor = new Color32(202, 215,115,255);
         Debug.Log("ShowPanelChooseFrame");
         levelLoader.VisualDoneColor(() =>
         {

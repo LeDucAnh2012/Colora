@@ -20,6 +20,7 @@ public class ElementLevel : PanelBase
     [SerializeField] private Image imgFrame;
     [SerializeField] private Image imgBG;
     [SerializeField] private Sprite sprFrameDefault;
+    [SerializeField] private Sprite sprBoxComplete;
 
     [ShowInInspector] public Dictionary<int, DataElementShape> dicListDataShape = new Dictionary<int, DataElementShape>();
     [ShowInInspector] public DataSave dataSave;
@@ -37,7 +38,7 @@ public class ElementLevel : PanelBase
     }
     public void LoadData(ShapeInfo shapeInfo)
     {
-        if(shapeInfo.indexShape == 34)
+        if (shapeInfo.indexShape == 34)
         {
             Debug.Log("name Shape = " + shapeInfo.nameShape);
             Debug.Log("Id Shape = " + shapeInfo.indexShape);
@@ -50,7 +51,8 @@ public class ElementLevel : PanelBase
 
         if (shapeInfo.scaleInHome != 0)
             rawImage.transform.localScale = Vector3.one * shapeInfo.scaleInHome;
-
+        if (shapeInfo.typeUnlock == TypeUnlock.Reward)
+            imgAds.gameObject.SetActive(!shapeInfo.IsUnlock);
         InitData();
     }
     public void LoadData(TextureMetadata textureMetadata, Texture2D texture2D)
@@ -62,7 +64,7 @@ public class ElementLevel : PanelBase
         this.textureMetadata = textureMetadata;
         idShape = textureMetadata.textureID;
         rawImage.SetNativeSize();
-      //  rawImage.transform.localRotation = Quaternion.Euler(0, 0, textureMetadata.typeAlbum == TypeAlbum.Create ? -90 : 0);
+        //  rawImage.transform.localRotation = Quaternion.Euler(0, 0, textureMetadata.typeAlbum == TypeAlbum.Create ? -90 : 0);
         rawImage.transform.localScale = Vector3.one * 3;
         rawImage.rectTransform.sizeDelta = Vector2.one * rawImage.texture.width * 1.75f;
         Debug.Log("size delta = " + rawImage.rectTransform.sizeDelta);
@@ -122,7 +124,7 @@ public class ElementLevel : PanelBase
         }
         else
         {
-        
+
 
             if (idBG != -1)
             {
@@ -149,6 +151,16 @@ public class ElementLevel : PanelBase
             imgBG.transform.localScale = Vector2.one * 0.62f;
         }
         imgBG.SetNativeSize();
+        if (shapeInfo != null)
+            if (shapeInfo.StateDone == StateDone.Done)
+            {
+                var img = GetComponent<Image>();
+                if (img != null)
+                {
+                    img.sprite = sprBoxComplete;
+                    img.SetNativeSize();
+                }
+            }
     }
 
     private void LoadTexture()
@@ -236,10 +248,17 @@ public class ElementLevel : PanelBase
                 gameObject.SetActive(true);
                 shapeInfo.IsUnlock = true;
             }
-            ActionHelper.CheckShowInter((bool isShowCompleted) =>
+            if (!shapeInfo.IsUnlock && shapeInfo.typeUnlock == TypeUnlock.Reward)
             {
-                LoadLV();
-            });
+                ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_ChoosePic_211224,"Rw_UnlockShape_" + shapeInfo.nameShape, LoadLV);
+            }
+            else
+            {
+                ActionHelper.CheckShowInter(KeyLogFirebase.Colora_INT_ChoosePic_Home_211224,(bool isShowCompleted) =>
+                {
+                    LoadLV();
+                });
+            }
         }
     }
     private void LoadLV(bool isComplete = true)

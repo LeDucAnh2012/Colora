@@ -483,7 +483,7 @@ public class ZoomInZoomOut : MonoBehaviour
         isCanMove = true;
         isAutoZoom = false;
     }
-    private IEnumerator IE_AutoZoomCam(Vector3 posZoom, float size, UnityAction callback = null)
+    public IEnumerator IE_AutoZoomCam(Vector3 posZoom, float size, UnityAction callback = null)
     {
         isCanMove = false;
         isAutoZoom = true;
@@ -511,15 +511,15 @@ public class ZoomInZoomOut : MonoBehaviour
         IE_AUTO_ZOOM = IE_AutoZoomCam(size, pos);
         StartCoroutine(IE_AUTO_ZOOM);
     }
-    public void AutoZoomCam(float size)
+    public void AutoZoomCam(float size,UnityAction callback = null)
     {
         if (IE_AUTO_ZOOM != null)
             StopCoroutine(IE_AUTO_ZOOM);
-        IE_AUTO_ZOOM = IE_Auto_Zoom_Button(size);
+        IE_AUTO_ZOOM = IE_Auto_Zoom_Button(size,callback);
         StartCoroutine(IE_AUTO_ZOOM);
     }
 
-    private IEnumerator IE_Auto_Zoom_Button(float size)
+    private IEnumerator IE_Auto_Zoom_Button(float size,UnityAction callback)
     {
         if (size > 20)
         {
@@ -541,6 +541,7 @@ public class ZoomInZoomOut : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+        callback?.Invoke();
         SetColorDefault();
     }
 

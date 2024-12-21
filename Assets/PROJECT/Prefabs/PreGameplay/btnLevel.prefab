@@ -154,7 +154,8 @@ MonoBehaviour:
   imgAds: {fileID: 7648244376805129123}
   imgFrame: {fileID: 6677321286037938018}
   imgBG: {fileID: 7372671453352516530}
-  sprFrameDefault: {fileID: 21300000, guid: 0b0605c40014c744eb3adbaf2cfeb9bb, type: 3}
+  sprFrameDefault: {fileID: 21300000, guid: f2ed7260fa24a394084c8698cee4d986, type: 3}
+  sprBoxComplete: {fileID: 21300000, guid: 662836228d1c3c942a142282351d7ecf, type: 3}
   dataSave:
     listDataCoor: []
   shapeInfo:
@@ -191,7 +192,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7197481402135729478
 RectTransform:
   m_ObjectHideFlags: 0

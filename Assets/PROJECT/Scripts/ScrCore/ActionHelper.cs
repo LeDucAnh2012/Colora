@@ -792,12 +792,10 @@ public static class ActionHelper
         if (CC_Ads.instance == null)
             Debug.Log("cc ads null");
         callback?.Invoke();
-        //CC_Ads.instance.LevelShowCMP(callback);
+        CC_Ads.instance.LevelShowCMP(callback);
     }
-    public static void CheckShowInter(Action<bool> callback = null, bool isCountTime = true)
+    public static void CheckShowInter(string idAds, Action<bool> callback = null, bool isCountTime = true)
     {
-
-
         if (VariableSystem.RemoveAdsHack || VariableSystem.RemoveAds || !VariableSystem.IsCanShowInter)
         {
             callback?.Invoke(true);
@@ -809,17 +807,17 @@ public static class ActionHelper
             if (isCountTime)
             {
                 if (AdsConfig.instance != null)
-                    AdsConfig.instance.CheckShowInter(callback);
+                    AdsConfig.instance.CheckShowInter(idAds,callback);
                 else
-                    CC_Interface.instance.ShowInter(callback);
+                    CC_Interface.instance.ShowInter(idAds,callback);
             }
             else
-                CC_Interface.instance.ShowInter(callback);
+                CC_Interface.instance.ShowInter(idAds,callback);
         }
         else
             callback?.Invoke(true);
     }
-    public static void ShowRewardAds(string where = "", Action<bool> callback = null)
+    public static void ShowRewardAds(string idAds,string where = "", Action<bool> callback = null)
     {
 
         LogEvent(KeyLogFirebase.AdsRewardClick + where);
@@ -831,7 +829,7 @@ public static class ActionHelper
                 callback?.Invoke(true);
             }
             else
-                CC_Interface.instance.ShowReward(where, callback);
+                CC_Interface.instance.ShowReward(idAds, where, callback);
         }
         else
         {
@@ -863,6 +861,7 @@ public static class ActionHelper
     }
     public static void TrackRevenue_Event(TypeAds typeAds, AdValue adValue)
     {
+        Debug.Log("TrackRevenue_Event _ Type ads = " + typeAds + "|| Value = " + (adValue.Value / 1000000));
         SingularSDK.CustomRevenue(typeAds.ToString(), "USD", adValue.Value / 1000000);
         Firebase.Analytics.Parameter[] AdParameters = {
              new Firebase.Analytics.Parameter("ad_platform", "GoogleAdmob"),

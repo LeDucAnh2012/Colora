@@ -106,7 +106,7 @@ public class ProgressPainting : PanelBase
         if (val >= 1 && CountCompleteGift == 2)
         {
             // show visual
-            OpenBox( 3);
+            OpenBox(3);
         }
         else
         if (val >= 0.66f && CountCompleteGift == 1)
@@ -119,14 +119,14 @@ public class ProgressPainting : PanelBase
                 indexContinue = CountCompleteGift;
                 return;
             }
-            OpenBox( 2);
+            OpenBox(2);
         }
         else
         if (val >= 0.33f && CountCompleteGift == 0)
         {
             // show visual
             isGetting = true;
-            OpenBox( 1);
+            OpenBox(1);
         }
         else
         {
@@ -147,7 +147,7 @@ public class ProgressPainting : PanelBase
         else
             DataDIY.SetCountGift(VariableSystem.LevelDIY, idBox);
 
-            VisualOpenBox(idBox);
+        VisualOpenBox(idBox);
     }
 
     private void VisualOpenBox(int idBox)
@@ -195,10 +195,13 @@ public class ProgressPainting : PanelBase
                 listType.Add(TypeBooster.Number);
 
                 VariableSystem.FillByNumBooster += 2;
-                gameplayUIManager.popupCompleteLevel.ShowPopup(listSpr, listVal, listType, () =>
+                StartCoroutine(gameplayUIManager.zoomInZoomOut.IE_AutoZoomCam(Vector2.zero, 35, () =>
                 {
-                    gameplayUIManager.btnBack.interactable = true;
-                });
+                    gameplayUIManager.popupCompleteLevel.ShowPopup(listSpr, listVal, listType, () =>
+                    {
+                        gameplayUIManager.btnBack.interactable = true;
+                    });
+                }));
                 return;
         }
 

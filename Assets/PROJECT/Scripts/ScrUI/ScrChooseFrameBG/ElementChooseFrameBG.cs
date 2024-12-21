@@ -52,7 +52,7 @@ public class ElementChooseFrameBG : PanelBase
         if (!frameBGInfo.IsUnlock)
         {
             Debug.Log("SHOW REWARD");
-            ActionHelper.ShowRewardAds("Rw_" + typeElement.ToString() + "_" + frameBGInfo.id, Choose);
+            ActionHelper.ShowRewardAds("","Rw_" + typeElement.ToString() + "_" + frameBGInfo.id, Choose);
         }
         else
             Choose();

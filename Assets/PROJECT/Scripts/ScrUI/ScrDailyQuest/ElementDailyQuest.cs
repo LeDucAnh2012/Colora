@@ -163,7 +163,7 @@ public class ElementDailyQuest : PanelBase
         if (data.IsGetQuest) return;
         if (!isGetting)
         {
-            ActionHelper.ShowRewardAds("Rw_DoneQuest_" + id, Callback);
+            ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_SkipQuest_211224,"Rw_DoneQuest_" + id, Callback);
             return;
         }
 

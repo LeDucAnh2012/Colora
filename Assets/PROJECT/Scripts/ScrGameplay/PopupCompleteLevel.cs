@@ -33,9 +33,9 @@ public class PopupCompleteLevel : PanelBase
     }
     public void OnClickClaimAds()
     {
-        Debug.Log("OnClickClaimAds" );
+        Debug.Log("OnClickClaimAds");
         SoundClickButton();
-        ActionHelper.ShowRewardAds("Rw_CompleteLevel_", Callback);
+        ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_X2RewardEndGame_211224,"Rw_CompleteLevel_", Callback);
 
     }
     private void Callback(bool isComplete)
@@ -49,7 +49,7 @@ public class PopupCompleteLevel : PanelBase
     public void OnClickNoThanks()
     {
         SoundClickButton();
-        ActionHelper.CheckShowInter((bool isShowCompleted) =>
+        ActionHelper.CheckShowInter(KeyLogFirebase.Colora_INT_NoThank_GiftPopup_211224, (bool isShowCompleted) =>
         {
             Continue(2);
             base.Hide();
@@ -60,7 +60,7 @@ public class PopupCompleteLevel : PanelBase
         listStr.Clear();
         for (int i = 0; i < listInt.Count; i++)
             listStr.Add("+" + valPlus);
-        Debug.Log("listSprite = "+ listSprite.Count);
+        Debug.Log("listSprite = " + listSprite.Count);
         canvasAllScene.popupGetGift.ShowPopup(listSprite, listStr, listTypeBooster, () =>
         {
             gameplayUIManager.ShapeDone();

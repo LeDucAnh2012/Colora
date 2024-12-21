@@ -6542,14 +6542,14 @@ MonoBehaviour:
   sourceSound: {fileID: 1734532979}
   sourceMusic: {fileID: 1734532978}
   listMusicHome:
-  - {fileID: 8300000, guid: c4e4b755255962048b57c0bcf78ed1b8, type: 3}
+  - {fileID: 8300000, guid: cf492b7c2c7405e42acd547561ccc9ba, type: 3}
   listMusicGameplay:
-  - {fileID: 8300000, guid: 182043163fb6e3444b54160c5f1dcff9, type: 3}
-  clipClick: {fileID: 8300000, guid: a0d84dde7fbdabd48b268e51f0426adb, type: 3}
-  clipTapPaintColor: {fileID: 8300000, guid: 5bd66126799ff38479372dfcf2470702, type: 3}
-  clipBooster: {fileID: 8300000, guid: 4bd56a83998064a42948f2ddfa17b3c0, type: 3}
-  clipCompletedLevel: {fileID: 8300000, guid: 7a3873c4361959745a07e4b270101f5d, type: 3}
-  clipShowPopup: {fileID: 8300000, guid: 759a991088e5d1c47972de7a607b4cd9, type: 3}
+  - {fileID: 8300000, guid: cf492b7c2c7405e42acd547561ccc9ba, type: 3}
+  clipClick: {fileID: 8300000, guid: d252c92ec0bc46c4a895d72f44cd3c38, type: 3}
+  clipTapPaintColor: {fileID: 8300000, guid: f8ad7923031d32745b42cdd411ca842a, type: 3}
+  clipBooster: {fileID: 8300000, guid: 92ea05a31d1a55247ad3c95fd1cd87b3, type: 3}
+  clipCompletedLevel: {fileID: 8300000, guid: 6bb93677c4b36044cbe240e271e49adb, type: 3}
+  clipShowPopup: {fileID: 8300000, guid: 6643397bd076c1c4c87964305987cfeb, type: 3}
   maxSountTap: 7
   timeStep: 0.025
   listSpawnClip: []
@@ -8708,6 +8708,10 @@ PrefabInstance:
     - target: {fileID: 284875013393522445, guid: 0e95b0c9985fe7744a2f845a5132ba87, type: 3}
       propertyPath: m_Name
       value: '[ZT_SDK]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299057957073583360, guid: 0e95b0c9985fe7744a2f845a5132ba87, type: 3}
+      propertyPath: allConfigData.IsDebug
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4201441189425735658, guid: 0e95b0c9985fe7744a2f845a5132ba87, type: 3}
       propertyPath: m_LocalPosition.x

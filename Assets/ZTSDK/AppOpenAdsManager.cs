@@ -38,7 +38,7 @@ public class AppOpenAdsManager : MonoBehaviour
         });
     }
 
-  
+
     #region AOA
 
     public bool IsAdAvailable
@@ -53,7 +53,7 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Loads the app open ad.
     /// </summary>
-    public void LoadAppOpenAd()
+    public void LoadAppOpenAd(UnityAction callback = null)
     {
         // Clean up the old ad before loading a new one.
         if (appOpenAd != null)
@@ -95,11 +95,11 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Shows the app open ad.
     /// </summary>
-    public void ShowAppOpenAd(UnityAction callback)
+    public void ShowAppOpenAd(string idAds, UnityAction callback)
     {
-        StartCoroutine(IE_WaitShowAOA(callback));
+        StartCoroutine(IE_WaitShowAOA(idAds, callback));
     }
-    public IEnumerator IE_WaitShowAOA(UnityAction callback)
+    public IEnumerator IE_WaitShowAOA(string idAds, UnityAction callback)
     {
         yield return new WaitForEndOfFrame();
         if (!CC_Interface.instance.IsShowingAd)
@@ -107,7 +107,11 @@ public class AppOpenAdsManager : MonoBehaviour
             this.callback = callback;
             CC_Interface.instance.IsShowingAd = true;
             ActionHelper.LogEvent(KeyLogFirebase.ShowAOASuccess);
-            appOpenAd?.Show();
+
+            LoadAppOpenAd(() =>
+            {
+                appOpenAd?.Show();
+            });
         }
     }
 
@@ -156,5 +160,5 @@ public class AppOpenAdsManager : MonoBehaviour
     }
     #endregion
 
-  
+
 }

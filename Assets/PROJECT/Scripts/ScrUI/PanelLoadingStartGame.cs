@@ -109,7 +109,7 @@ public class PanelLoadingStartGame : MonoBehaviour
                 isAOA = true;
                 isShowAOA = true;
                 CC_Interface.instance.IsLaunchAoa = true;
-                AdsConfig.instance.CheckShowAoa(CallBackHideAOA);
+                AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Splash_211224, CallBackHideAOA);
                 //    CallBackHideAOA();
             }
             yield return null;
@@ -179,7 +179,7 @@ public class PanelLoadingStartGame : MonoBehaviour
     private void LoadAoa()
     {
         CC_Interface.instance.IsLaunchAoa = true;
-        AdsConfig.instance.CheckShowAoa();
+        AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Splash_211224);
     }
     private void LoadCollapseBanner()
     {

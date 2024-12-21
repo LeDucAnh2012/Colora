@@ -155,6 +155,7 @@ MonoBehaviour:
   imgFrame: {fileID: 6677321286037938018}
   imgBG: {fileID: 7372671453352516530}
   sprFrameDefault: {fileID: 21300000, guid: 303a89b4dd6674c48a9b54ecbe48f69c, type: 3}
+  sprBoxComplete: {fileID: 21300000, guid: 662836228d1c3c942a142282351d7ecf, type: 3}
   dataSave:
     listDataCoor: []
   shapeInfo:

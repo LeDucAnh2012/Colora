@@ -142,7 +142,7 @@ public class BoosterManager : PanelBase
         isCountTimeShowBooster = false;
         isStartCountTime = false;
 
-        ActionHelper.ShowRewardAds("Rw_" + typeBoosterWatchAds.ToString() + "_Ingame", CallBack);
+        ActionHelper.ShowRewardAds(KeyLogFirebase.Colora_RW_BoosterInPlayGame_211224,"Rw_" + typeBoosterWatchAds.ToString() + "_Ingame", CallBack);
     }
     private void CallBack(bool isComplete)
     {

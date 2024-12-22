@@ -128,8 +128,6 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                 LoadReward();
                 LoadBanner();
                 LoadInterAds();
-                ListenToAdEvents();
-
             });
         }
     }
@@ -170,6 +168,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         // send the request to load the ad.
         Debug.Log("Loading banner ad.");
         _bannerView.LoadAd(adRequest);
+        ListenToAdEvents();
     }
     /// <summary>
     /// listen to events the banner view may raise.
@@ -251,7 +250,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         {
             if (!RemoteConfig.instance.allConfigData.BannerCollapInLoading)
             {
-                CanvasAllScene.instance.panelLoading.Hide();
+                CanvasAllScene.instance.objLoading.Hide();
                 LoadBannerNormal();
                 return;
             }
@@ -392,7 +391,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     }
     public void ShowInter(string idAds, Action<bool> callback = null)
     {
-        CanvasAllScene.instance.panelLoading.Show();
+        CanvasAllScene.instance.objLoading.Show();
 
         if (VariableSystem.IsUseIdTest)
             CallbackLoadInter(callback);
@@ -407,7 +406,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     }
     private void CallbackLoadInter(Action<bool> callback = null)
     {
-        CanvasAllScene.instance.panelLoading.Hide();
+        CanvasAllScene.instance.objLoading.Hide();
         if (_interstitialAd != null && _interstitialAd.CanShowAd())
         {
             Debug.Log("Showing interstitial ad.");
@@ -605,7 +604,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
 
     void StartCMP()
     {
-        if (IsCMPConsent())
+        if (IsCMPConsent() && IsConsentCMP)
             ApplyConsentSettings(ConsentStatus.Obtained);
         else
             ApplyConsentSettings(ConsentStatus.Required);
@@ -613,7 +612,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     private UnityAction callbackHideCMP;
     public void LevelShowCMP(UnityAction callback = null)
     {
-        if (!IsCMPConsent())
+        if (!IsCMPConsent() && !IsConsentCMP)
         {
             isContinueLoading = false;
 
@@ -624,7 +623,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         else
         {
             InitAds();
-            CanvasAllScene.instance.panelLoading.Hide();
+            CanvasAllScene.instance.objLoading.Hide();
             isShowCMP = false;
             callback?.Invoke();
         }
@@ -636,15 +635,22 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     {
         //Time.timeScale = 1;
         isContinueLoading = true;
-        CanvasAllScene.instance.panelLoading.Hide();
+        CanvasAllScene.instance.objLoading.Hide();
         if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
+        {
             isShowCMP = false;
-        callbackHideCMP?.Invoke();
+            callbackHideCMP?.Invoke();
+        }
         //   InitAds();
     }
 
 
 
+    private bool IsConsentCMP
+    {
+        get => PlayerPrefs.GetInt("IsConsentCMP_ggAdmob") == 1;
+        set => PlayerPrefs.SetInt("IsConsentCMP_ggAdmob", value ? 1 : 0);
+    }
 
 
     void ApplyConsentSettings(ConsentStatus status)
@@ -682,6 +688,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
                 break;
             // Trạng thái này nghĩa là ứng dụng yêu cầu sự đồng ý của người dùng, nhưng người dùng vẫn chưa cung cấp quyết định(đồng ý hoặc từ chối).
             case ConsentStatus.Required:
+                IsConsentCMP = false;
                 Debug.Log("Consent is required. Setting appropriate flags.");
                 requestConfiguration = new RequestConfiguration
                 {
@@ -696,6 +703,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             // Cửa sổ CMP(Consent Management Platform) được hiển thị, và người dùng đã chọn chấp nhận các điều khoản.
 
             case ConsentStatus.Obtained:
+                IsConsentCMP = true;
                 Debug.Log("Consent obtained. Enabling personalized ads.");
                 requestConfiguration = new RequestConfiguration
                 {
@@ -769,6 +777,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     /// </summary>
     bool IsCMPConsent()
     {
+        Debug.Log("Is Consent CMP = " + IsConsentCMP);
         //Debug.LogError("isCMPConsent CanShowAds: " + CanShowAds() + " ----- CanShowPersonalizedAds: " + CanShowPersonalizedAds());
         if (CanShowAds() || CanShowPersonalizedAds())
         {
@@ -925,6 +934,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     }
     void OnConsentInfoUpdated(FormError consentError)
     {
+        Debug.Log("Form Error = " + consentError);
         if (consentError != null)
         {
             // Handle the error.
@@ -934,7 +944,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             ContinueLoading();
             return;
         }
-        CanvasAllScene.instance.panelLoading.Show();
+        CanvasAllScene.instance.objLoading.Show();
         // If the error is null, the consent information state was updated.
         // You are now ready to check if a form is available.
         ConsentForm.LoadAndShowConsentFormIfRequired((FormError formError) =>
@@ -952,14 +962,15 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             ContinueLoading();
             Time.timeScale = 1;
             //Request an ad.
-            if (IsCMPConsent())
-            {
-                ApplyConsentSettings(ConsentStatus.Obtained);
-            }
-            else
-            {
-                ApplyConsentSettings(ConsentStatus.Required);
-            }
+            ApplyConsentSettings(ConsentStatus.Obtained);
+            //if (IsCMPConsent())
+            //{
+            //    ApplyConsentSettings(ConsentStatus.Obtained);
+            //}
+            //else
+            //{
+            //    ApplyConsentSettings(ConsentStatus.Required);
+            //}
             InitAds();
 
         });

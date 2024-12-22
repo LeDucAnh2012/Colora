@@ -791,7 +791,7 @@ public static class ActionHelper
     {
         if (CC_Ads.instance == null)
             Debug.Log("cc ads null");
-        callback?.Invoke();
+     
         CC_Ads.instance.LevelShowCMP(callback);
     }
     public static void CheckShowInter(string idAds, Action<bool> callback = null, bool isCountTime = true)

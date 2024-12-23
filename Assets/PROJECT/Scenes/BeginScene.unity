@@ -3738,7 +3738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHack: 0
-  mode: 1
+  mode: 0
 --- !u!4 &1124863688
 Transform:
   m_ObjectHideFlags: 0
@@ -8711,7 +8711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3299057957073583360, guid: 0e95b0c9985fe7744a2f845a5132ba87, type: 3}
       propertyPath: allConfigData.IsDebug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4201441189425735658, guid: 0e95b0c9985fe7744a2f845a5132ba87, type: 3}
       propertyPath: m_LocalPosition.x

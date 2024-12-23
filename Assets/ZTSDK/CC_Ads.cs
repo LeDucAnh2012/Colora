@@ -58,7 +58,6 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     public void Start()
     {
         RegisterKeyAds();
-        StartCMP();
         deviceIDTest2 = SystemInfo.deviceUniqueIdentifier;
     }
     private void RegisterKeyAds()
@@ -602,17 +601,19 @@ public class CC_Ads : UnitySingleton<CC_Ads>
 
     #region CMP
 
-    void StartCMP()
-    {
-        if (IsCMPConsent() && IsConsentCMP)
-            ApplyConsentSettings(ConsentStatus.Obtained);
-        else
-            ApplyConsentSettings(ConsentStatus.Required);
-    }
     private UnityAction callbackHideCMP;
     public void LevelShowCMP(UnityAction callback = null)
     {
-        if (!IsCMPConsent() && !IsConsentCMP)
+        Debug.Log("IsConsentCMP = " + IsConsentCMP);
+        if(IsConsentCMP)
+        {
+            CanvasAllScene.instance.objLoading.Hide();
+            isShowCMP = false;
+            callback?.Invoke();
+            return;
+        }
+
+        if (!IsCMPConsent())
         {
             isContinueLoading = false;
 
@@ -620,19 +621,10 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             callbackHideCMP = callback;
             ResetCMP();
         }
-        else
-        {
-            InitAds();
-            CanvasAllScene.instance.objLoading.Hide();
-            isShowCMP = false;
-            callback?.Invoke();
-        }
     }
-
-
-
     private void ContinueLoading()
     {
+        Debug.Log("Continue Loading");
         //Time.timeScale = 1;
         isContinueLoading = true;
         CanvasAllScene.instance.objLoading.Hide();

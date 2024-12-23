@@ -77,6 +77,7 @@ public class PanelLoadingStartGame : MonoBehaviour
 
     public void LoadingProgress()
     {
+        Debug.Log("LoadingProgress");
         isContinueLoading = true;
         if (isRealLoading)
         {
@@ -174,7 +175,8 @@ public class PanelLoadingStartGame : MonoBehaviour
                 LoadAoa();
             }
         }
-        LoadScene();
+        if (isShowAOA)
+            LoadScene();
     }
     private void LoadAoa()
     {

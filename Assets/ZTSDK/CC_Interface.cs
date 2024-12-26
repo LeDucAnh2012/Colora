@@ -34,10 +34,10 @@ public class CC_Interface : MonoBehaviour
         if (state == AppState.Foreground)
         {
             if (IsLaunchAoa && !ActionHelper.IsEditor())
-                AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Resume_211224);
+                AdsConfig.instance.CheckShowAoa();
         }
     }
-    public void ShowAppOpenAd(string idAds,UnityAction callback)
+    public void ShowAppOpenAd(UnityAction callback)
     {
         if (IsShowingAd)
         {
@@ -47,13 +47,15 @@ public class CC_Interface : MonoBehaviour
         }
         Debug.Log("AOA return IsAdAvailable " + AppOpenAdsManager.instance.IsAdAvailable);
         if (AppOpenAdsManager.instance.IsAdAvailable)
-            AppOpenAdsManager.instance.ShowAppOpenAd(idAds,callback);
+            AppOpenAdsManager.instance.ShowAppOpenAd(callback);
+        else
+            AppOpenAdsManager.instance.LoadAppOpenAd();
 
     }
     #endregion
 
     #region Reward
-    public void ShowReward(string idAds,string where = "", Action<bool> callback = null)
+    public void ShowReward(string idAds, string where = "", Action<bool> callback = null)
     {
         if (!TimeManager.instance.IsHasInternet)
         {
@@ -75,7 +77,7 @@ public class CC_Interface : MonoBehaviour
             Debug.Log("loading in 1s");
             yield return new WaitForSecondsRealtime(1f);
             CanvasAllScene.instance.objLoading.Hide();
-            CC_Ads.instance.ShowRewardedAd(idAds,where,  callback);
+            CC_Ads.instance.ShowRewardedAd(idAds, where, callback);
         }
     }
     #endregion
@@ -90,7 +92,7 @@ public class CC_Interface : MonoBehaviour
             callback?.Invoke(false);
         }
         else
-            CC_Ads.instance.ShowInter(idAds,callback);
+            CC_Ads.instance.ShowInter(idAds, callback);
     }
     #endregion
 
@@ -123,25 +125,25 @@ public class CC_Interface : MonoBehaviour
                 DestroyBanner();
 
                 break;
-            //case IAP_Product.Princess_Pack:
-            //    Debug.Log("Restore Princess_Pack");
-            //    ActionHelper.LogEvent(KeyLogFirebase.BuyPackSuccess + iAP_Product);
-            //    DataShop.GetListShop()[0].isUnLock = true;
-            //    DataShop.UnLock(0);
+                //case IAP_Product.Princess_Pack:
+                //    Debug.Log("Restore Princess_Pack");
+                //    ActionHelper.LogEvent(KeyLogFirebase.BuyPackSuccess + iAP_Product);
+                //    DataShop.GetListShop()[0].isUnLock = true;
+                //    DataShop.UnLock(0);
 
-            //    break;
-            //case IAP_Product.Fairy_Pack:
-            //    Debug.Log("Restore Fairy_Pack");
-            //    ActionHelper.LogEvent(KeyLogFirebase.BuyPackSuccess + iAP_Product);
-            //    DataShop.GetListShop()[1].isUnLock = true;
-            //    DataShop.UnLock(1);
+                //    break;
+                //case IAP_Product.Fairy_Pack:
+                //    Debug.Log("Restore Fairy_Pack");
+                //    ActionHelper.LogEvent(KeyLogFirebase.BuyPackSuccess + iAP_Product);
+                //    DataShop.GetListShop()[1].isUnLock = true;
+                //    DataShop.UnLock(1);
 
-            //    break;
+                //    break;
         }
     }
     public void PurchaseCallback(bool isSuccess)
     {
-        
+
         CanvasAllScene.instance.panelLoading.Hide();
         string str = isSuccess ? I2.Loc.ScriptLocalization.Purchase_success : I2.Loc.ScriptLocalization.Purchase_failed;
 

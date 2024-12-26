@@ -110,7 +110,7 @@ public class PanelLoadingStartGame : MonoBehaviour
                 isAOA = true;
                 isShowAOA = true;
                 CC_Interface.instance.IsLaunchAoa = true;
-                AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Splash_211224, CallBackHideAOA);
+                AdsConfig.instance.CheckShowAoa(CallBackHideAOA);
                 //    CallBackHideAOA();
             }
             yield return null;
@@ -181,7 +181,7 @@ public class PanelLoadingStartGame : MonoBehaviour
     private void LoadAoa()
     {
         CC_Interface.instance.IsLaunchAoa = true;
-        AdsConfig.instance.CheckShowAoa(KeyLogFirebase.Colora_AOA_Splash_211224);
+        AdsConfig.instance.CheckShowAoa();
     }
     private void LoadCollapseBanner()
     {
@@ -190,16 +190,8 @@ public class PanelLoadingStartGame : MonoBehaviour
 
     private void LoadScene()
     {
-        if (RemoteConfig.instance.allConfigData.BannerCollapInLoading)
-            ActionHelper.ShowBannerCollapse(false, () =>
-            {
-                asyncOperation.allowSceneActivation = true;
-            });
-        else
-        {
-            ActionHelper.ShowBanner();
-            asyncOperation.allowSceneActivation = true;
-        }
+        ActionHelper.ShowBanner();
+        asyncOperation.allowSceneActivation = true;
     }
     #endregion
 

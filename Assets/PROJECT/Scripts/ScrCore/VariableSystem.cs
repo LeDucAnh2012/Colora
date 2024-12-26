@@ -32,19 +32,19 @@ public static class VariableSystem
     //}
     public static bool Sound
     {
-        get => PlayerPrefs.GetInt(nameof(Sound), 1)==1;
+        get => PlayerPrefs.GetInt(nameof(Sound), 1) == 1;
         set
         {
-            PlayerPrefs.SetInt(nameof(Sound), value?1:0);
+            PlayerPrefs.SetInt(nameof(Sound), value ? 1 : 0);
             PlayerPrefs.Save();
         }
     }
     public static bool Music
     {
-        get => PlayerPrefs.GetInt(nameof(Music), 1)==1;
+        get => PlayerPrefs.GetInt(nameof(Music), 1) == 1;
         set
         {
-            PlayerPrefs.SetInt(nameof(Music), value?1:0);
+            PlayerPrefs.SetInt(nameof(Music), value ? 1 : 0);
             PlayerPrefs.Save();
         }
     }
@@ -261,12 +261,7 @@ public static class VariableSystem
     }
     public static bool IsUseIdTest
     {
-        get
-        {
-            if (PlayerPrefs.GetInt(nameof(IsUseIdTest), 0) == 1)
-                return true;
-            return KeepObject.instance.mode == TypeMode.Development;//  PlayerPrefs.GetInt(nameof(IsUseIdTest), 0) == 1;
-        }
+        get => PlayerPrefs.GetInt(nameof(IsUseIdTest), 0) == 1;
         set
         {
             PlayerPrefs.SetInt(nameof(IsUseIdTest), value ? 1 : 0);

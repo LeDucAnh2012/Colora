@@ -53,8 +53,9 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Loads the app open ad.
     /// </summary>
-    public void LoadAppOpenAd(UnityAction callback = null)
+    public void LoadAppOpenAd( UnityAction callback = null)
     {
+        _adUnitId = ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene ? "ca-app-pub-9912310468706838/9852900361" : "ca-app-pub-9912310468706838/5881865768";
         // Clean up the old ad before loading a new one.
         if (appOpenAd != null)
         {
@@ -79,6 +80,7 @@ public class AppOpenAdsManager : MonoBehaviour
                 // if error is not null, the load request failed.
                 if (error != null || ad == null)
                 {
+                    Debug.Log("Load aoa failed ");
                     Invoke(nameof(LoadAppOpenAd), ActionHelper.GetTimeDelayReloadAds(ref retryAttemp_AOA));
                     return;
                 }
@@ -86,7 +88,7 @@ public class AppOpenAdsManager : MonoBehaviour
                 retryAttemp_AOA = 0;
                 appOpenExpireTime = DateTime.Now + APPOPEN_TIMEOUT;
                 appOpenAd = ad;
-
+                Debug.Log("Load aoa done ");
                 RegisterEventHandlers(ad);
             });
     }
@@ -95,24 +97,21 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Shows the app open ad.
     /// </summary>
-    public void ShowAppOpenAd(string idAds, UnityAction callback)
+    public void ShowAppOpenAd( UnityAction callback)
     {
-        StartCoroutine(IE_WaitShowAOA(idAds, callback));
+        StartCoroutine(IE_WaitShowAOA( callback));
     }
-    public IEnumerator IE_WaitShowAOA(string idAds, UnityAction callback)
+    public IEnumerator IE_WaitShowAOA(UnityAction callback)
     {
         yield return new WaitForEndOfFrame();
-        if (!CC_Interface.instance.IsShowingAd)
-        {
-            this.callback = callback;
-            CC_Interface.instance.IsShowingAd = true;
-            ActionHelper.LogEvent(KeyLogFirebase.ShowAOASuccess);
+        Debug.Log("is show ads = " + CC_Interface.instance.IsShowingAd);
+        this.callback = callback;
 
-            LoadAppOpenAd(() =>
-            {
-                appOpenAd?.Show();
-            });
-        }
+        ActionHelper.LogEvent(KeyLogFirebase.ShowAOASuccess);
+        CanvasAllScene.instance.objLoading.Show();
+        CanvasAllScene.instance.objLoading.Hide();
+        CC_Interface.instance.IsShowingAd = true;
+        appOpenAd?.Show();
     }
 
     private void RegisterEventHandlers(AppOpenAd ad)

@@ -90,7 +90,7 @@ public class AdsConfig : MonoBehaviour
         CC_Interface.instance.ShowInter(idAds, callback);
     }
 
-    public void CheckShowAoa(string idAds, UnityAction callback = null)
+    public void CheckShowAoa( UnityAction callback = null)
     {
         if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack || !RemoteConfig.instance.allConfigData.ShowAOA)
         {
@@ -126,7 +126,7 @@ public class AdsConfig : MonoBehaviour
         countTimeAoa.time = 0;
         countTimeAoa.isCountTime = true;
 
-        CC_Interface.instance.ShowAppOpenAd(idAds,callback);
+        CC_Interface.instance.ShowAppOpenAd(callback);
     }
 
     public void ShowBannerCollapseNow(bool isShowLoading, UnityAction callbackLoad)

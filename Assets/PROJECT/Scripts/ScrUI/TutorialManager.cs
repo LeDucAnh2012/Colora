@@ -63,12 +63,12 @@ public class TutorialManager : PanelBase
         foreach (var shape in listShape)
             shape.ResetColor();
 
-        imgNum_1.DOColor(colPress, 0.2f).From(Color.white).SetEase(Ease.Linear);
+        imgNum_1.DOColor(colPress, 0.2f).From(new Color32(253, 87, 87, 255)).SetEase(Ease.Linear);
         imgNum_1.transform.DOScale(0.9f, 0.2f).From(1).SetEase(Ease.Linear);
 
         imgHand.transform.DOScale(0.9f, 0.2f).From(1).SetEase(Ease.Linear).OnComplete(() =>
         {
-            imgNum_1.DOColor(Color.white, 0.2f).From(colPress).SetEase(Ease.Linear);
+            imgNum_1.DOColor(new Color32(253,87,87,255), 0.2f).From(colPress).SetEase(Ease.Linear);
             imgNum_1.transform.DOScale(1, 0.2f).From(0.9f).SetEase(Ease.Linear);
 
             imgHand.transform.DOScale(1, 0.2f).From(0.9f).SetEase(Ease.Linear).OnComplete(() =>

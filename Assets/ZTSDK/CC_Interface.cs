@@ -1,6 +1,7 @@
 using Google.Play.Review;
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
+using Singular;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ public class CC_Interface : MonoBehaviour
 {
     public static CC_Interface instance;
 
-    public bool HasBanner { get; set; }
     public bool IsShowingAd { get; set; }
     public bool IsLaunchAoa = false;
     private void Awake()
@@ -22,7 +22,7 @@ public class CC_Interface : MonoBehaviour
     private void Start()
     {
         AppStateEventNotifier.AppStateChanged += OnAppStateChanged;
-
+        SingularSDK.SkanRegisterAppForAdNetworkAttribution();
 #if UNITY_ANDROID
         _coroutine = StartCoroutine(InitReview());
 #endif
@@ -99,7 +99,7 @@ public class CC_Interface : MonoBehaviour
     #region Banner
     public void ShowBanner()
     {
-        CC_Ads.instance.LoadBanner();
+        CC_Ads.instance.ShowBanner();
     }
     public void DestroyBanner()
     {

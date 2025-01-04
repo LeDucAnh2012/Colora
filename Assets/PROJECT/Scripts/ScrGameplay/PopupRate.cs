@@ -48,7 +48,7 @@ public class PopupRate : PanelBase
         }
         else
         {
-            VariableSystem.CountShowRate = 5;
+            VariableSystem.CountShowRate = 3;
         }
 
         imgHand.SetActive(false);
@@ -68,7 +68,7 @@ public class PopupRate : PanelBase
     public void OnClickExit()
     {
         SoundClickButton();
-        VariableSystem.CountShowRate = 5;
+        VariableSystem.CountShowRate = 3;
         base.Hide();
     }
 }

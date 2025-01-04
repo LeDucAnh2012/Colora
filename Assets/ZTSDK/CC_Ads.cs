@@ -39,10 +39,9 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     private int retryAttempt_Reward = 0;
     private int retryAttempt_Banner = 0;
 
-    private bool isLoadBanner;
-    private bool isLoadInter;
-    private bool isLoadReward;
-    private bool isRewarded;
+    public bool isLoadBanner;
+    public bool isLoadInter;
+    public bool isLoadReward;
 
     private Action<bool> callbackReward;
     private string whereReward;
@@ -124,13 +123,26 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             {
                 // This callback is called once the MobileAds SDK is initialized
                 Debug.Log("Load Reward");
-                LoadReward();
-                LoadBanner();
-                LoadInterAds();
+                LoadAllAds();
             });
         }
     }
+    public void LoadAllAds()
+    {
+        LoadReward();
+        LoadInterAds();
+        if (ActionHelper.GetSceneCurrent() != TypeSceneCurrent.BeginScene)
+            LoadBanner(ShowBanner);
+        else
+            LoadBanner();
+    }
 
+    public void LoseInternet()
+    {
+        isLoadBanner = false;
+        isLoadInter = false;
+        isLoadReward = false;
+    }
     #region Banner
 
     /// <summary>
@@ -150,11 +162,19 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         _bannerView = new BannerView(_adUnitId_Banner, AdSize.Banner, AdPosition.Bottom);
 
     }
+    private UnityAction callbackLoadBanner = null;
     /// <summary>
     /// Creates the banner view and loads a banner ad.
     /// </summary>
-    private void LoadAd()
+    private void LoadBanner(UnityAction callback = null)
     {
+        if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack)
+            return;
+
+        if (!TimeManager.instance.IsHasInternet || isLoadBanner)
+            return;
+
+        callbackLoadBanner = callback;
         // create an instance of a banner view first.
         if (_bannerView == null)
         {
@@ -179,10 +199,9 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         {
             Debug.Log("Banner view loaded an ad with response : "
                 + _bannerView.GetResponseInfo());
-            CC_Interface.instance.HasBanner = true;
-            isLoadBanner = false;
+            isLoadBanner = true;
             retryAttempt_Banner = 0;
-
+            callbackLoadBanner?.Invoke();
         };
         // Raised when an ad fails to load into the banner view.
         _bannerView.OnBannerAdLoadFailed += (LoadAdError error) =>
@@ -236,33 +255,12 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         }
     }
 
-
-    public void LoadBanner()
+    public void ShowBanner()
     {
-        if (VariableSystem.RemoveAds || VariableSystem.RemoveAdsHack)
-            return;
-
-        if (!TimeManager.instance.IsHasInternet || isLoadBanner || CC_Interface.instance.HasBanner)
-            return;
-
-        if (ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene)
-        {
-            if (!RemoteConfig.instance.allConfigData.BannerCollapInLoading)
-            {
-                CanvasAllScene.instance.objLoading.Hide();
-                LoadBannerNormal();
-                return;
-            }
-        }
+        if (_bannerView == null)
+            LoadBanner(() => { _bannerView.Show(); });
         else
-            LoadBannerNormal();
-    }
-    public void LoadBannerNormal()
-    {
-        isLoadBanner = true;
-        Debug.Log("banner loaded");
-        LoadAd();
-
+            _bannerView.Show();
     }
     #endregion
 
@@ -496,7 +494,6 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             AdsConfig.instance.countTimeInterReward.isCountTime = true;
 
             CC_Interface.instance.IsShowingAd = true;
-            isRewarded = false;
 
             ActionHelper.LogEvent(KeyLogFirebase.AdsRewardCompleted + where);
 
@@ -553,8 +550,6 @@ public class CC_Ads : UnitySingleton<CC_Ads>
         // Raised when the ad closed full screen content.
         ad.OnAdFullScreenContentClosed += () =>
         {
-            isRewarded = true;
-
 
             StartCoroutine(IE_ResetStateAds());
             Debug.Log("Rewarded ad full screen content closed.");
@@ -605,7 +600,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
     public void LevelShowCMP(UnityAction callback = null)
     {
         Debug.Log("IsConsentCMP = " + IsConsentCMP);
-        if(IsConsentCMP)
+        if (IsConsentCMP)
         {
             CanvasAllScene.instance.objLoading.Hide();
             isShowCMP = false;

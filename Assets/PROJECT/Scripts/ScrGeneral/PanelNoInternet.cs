@@ -13,6 +13,10 @@ public class PanelNoInternet : PanelBase
     public void ShowPanel(UnityAction callback, bool isSendRequest)
     {
         base.Show();
+
+        if(CC_Ads.instance != null) 
+            CC_Ads.instance.LoseInternet();
+
         this.isSendRequest = isSendRequest;
         this.callback = callback;
     }
@@ -37,6 +41,7 @@ public class PanelNoInternet : PanelBase
             if (Application.internetReachability != NetworkReachability.NotReachable)
             {
                 RemoteConfig.instance.CheckRemoteConfigValues();
+                CC_Ads.instance.LoadAllAds();
                 callback?.Invoke();
                 StopCoroutine(IE_RELOAD);
                 base.Hide();

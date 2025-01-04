@@ -1333,6 +1333,7 @@ namespace Singular
         CustomRevenue_(eventName, currency, amount);
 #elif UNITY_ANDROID
         if (singular != null) {
+                Debug.Log("Call static ");
             singular.CallStatic<bool>(androidNativeMethodName_CustomRevenue, 
                 eventName, currency, amount);
         }

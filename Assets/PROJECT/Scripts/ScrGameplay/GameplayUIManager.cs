@@ -60,17 +60,13 @@ public class GameplayUIManager : MonoBehaviour
     {
         panelChooseFrameBG.LoadData();
 
-        //if (!VariableSystem.FirstOpenGame)
-        //{
-        //    tutorialManager.ShowTut();
-        //    VariableSystem.FirstOpenGame = true;
-        //}
-
-        if (VariableSystem.CountShowRate == 0 && !VariableSystem.IsRate)
+        if (!VariableSystem.FirstOpenGame)
         {
-            VariableSystem.CountShowRate = 5;
-            popupRate.ShowPopup();
+            tutorialManager.ShowTut();
+            VariableSystem.FirstOpenGame = true;
         }
+
+     
         LoadLevel();
 
         if (KeepObject.instance.mode == TypeMode.Marketing)
@@ -192,11 +188,9 @@ public class GameplayUIManager : MonoBehaviour
         gridButton.gameObject.SetActive(true);
         btnBack.gameObject.SetActive(true);
 
-        popupRate.ShowPopup();
-
         if (VariableSystem.CountShowRate == 0 && !VariableSystem.IsRate)
         {
-            VariableSystem.CountShowRate = 5;
+            VariableSystem.CountShowRate = 3;
             popupRate.ShowPopup();
         }
 

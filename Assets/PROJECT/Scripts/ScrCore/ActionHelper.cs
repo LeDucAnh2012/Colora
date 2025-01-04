@@ -775,6 +775,8 @@ public static class ActionHelper
     #region[ Call ADS ]
     public static void ShowBanner()
     {
+        if (VariableSystem.RemoveAdsHack || VariableSystem.RemoveAds) return;
+
         CC_Interface.instance.ShowBanner();
     }
     public static void DestroyBanner()
@@ -861,8 +863,8 @@ public static class ActionHelper
     }
     public static void TrackRevenue_Event(TypeAds typeAds, AdValue adValue)
     {
-        Debug.Log("TrackRevenue_Event _ Type ads = " + typeAds + "|| Value = " + (adValue.Value / 1000000));
-        SingularSDK.CustomRevenue(typeAds.ToString(), "USD", adValue.Value / 1000000);
+        SingularSDK.CustomRevenue(typeAds.ToString(), "USD", (double)adValue.Value / 1000000);
+        Debug.Log("TrackRevenue_Event _ Type ads = " + typeAds + "|| Value = " + ((double)adValue.Value / 1000000));
         Firebase.Analytics.Parameter[] AdParameters = {
              new Firebase.Analytics.Parameter("ad_platform", "GoogleAdmob"),
               new Firebase.Analytics.Parameter("currency","USD"),

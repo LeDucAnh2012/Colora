@@ -1,3 +1,4 @@
+using Singular;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ public class AdsConfig : MonoBehaviour
     {
         instance = this;
     }
+  
     private void Update()
     {
         if (configData == null)

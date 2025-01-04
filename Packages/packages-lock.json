@@ -305,7 +305,7 @@
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.1",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -384,15 +384,6 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
-    },
-    "singular-unity-package": {
-      "version": "https://github.com/singular-labs/Singular-Unity-SDK.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.2.1"
-      },
-      "hash": "049f1ad88a5a3627b34ba46f543414e7c89f28f6"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

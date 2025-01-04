@@ -155,7 +155,7 @@ public static class VariableSystem
 
     public static int CountShowRate
     {
-        get => PlayerPrefs.GetInt(nameof(CountShowRate), 1);
+        get => PlayerPrefs.GetInt(nameof(CountShowRate), 3);
         set
         {
             PlayerPrefs.SetInt(nameof(CountShowRate), value);

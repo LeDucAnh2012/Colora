@@ -90,7 +90,7 @@ public class CC_BannerCollapse : MonoBehaviour
             callBackLoad?.Invoke();
             callBackLoad = null;
             Debug.Log("isLoaded = false");
-            CC_Ads.instance.LoadBanner();
+            //CC_Ads.instance.LoadBanner();
             return;
         }
 
@@ -186,8 +186,8 @@ public class CC_BannerCollapse : MonoBehaviour
             CanvasAllScene.instance.panelLoading.Hide();
             Debug.Log("Banner view full screen content closed.");
             isLoaded = false;
-            if (CC_Ads.instance != null)
-                CC_Ads.instance.LoadBannerNormal();
+            //if (CC_Ads.instance != null)
+            //    CC_Ads.instance.LoadBannerNormal();
         };
     }
 }

@@ -3738,7 +3738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHack: 0
-  mode: 0
+  mode: 1
 --- !u!4 &1124863688
 Transform:
   m_ObjectHideFlags: 0

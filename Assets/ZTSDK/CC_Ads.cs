@@ -217,7 +217,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             Debug.Log(String.Format("Banner view paid {0} {1}.",
                 adValue.Value,
                 adValue.CurrencyCode));
-            ActionHelper.TrackRevenue_Event(TypeAds.Banner, adValue);
+            ActionHelper.TrackRevenue_Event(_bannerView, TypeAds.Banner, adValue);
 
         };
         // Raised when an impression is recorded for an ad.
@@ -326,7 +326,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             Debug.Log(String.Format("Interstitial ad paid {0} {1}.",
                 adValue.Value,
                 adValue.CurrencyCode));
-            ActionHelper.TrackRevenue_Event(TypeAds.Inter, adValue);
+            ActionHelper.TrackRevenue_Event(interstitialAd, TypeAds.Inter, adValue);
         };
         // Raised when an impression is recorded for an ad.
         interstitialAd.OnAdImpressionRecorded += () =>
@@ -530,7 +530,7 @@ public class CC_Ads : UnitySingleton<CC_Ads>
             Debug.Log(String.Format("Rewarded ad paid {0} {1}.",
                 adValue.Value,
                 adValue.CurrencyCode));
-            ActionHelper.TrackRevenue_Event(TypeAds.Reward, adValue);
+            ActionHelper.TrackRevenue_Event(ad, TypeAds.Reward, adValue);
         };
         // Raised when an impression is recorded for an ad.
         ad.OnAdImpressionRecorded += () =>

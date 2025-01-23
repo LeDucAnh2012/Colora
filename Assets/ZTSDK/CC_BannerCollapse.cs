@@ -161,7 +161,7 @@ public class CC_BannerCollapse : MonoBehaviour
         // Raised when the ad is estimated to have earned money.
         _bannerView.OnAdPaid += (AdValue adValue) =>
         {
-            ActionHelper.TrackRevenue_Event(TypeAds.BannerCollapse, adValue);
+            ActionHelper.TrackRevenue_Event(_bannerView, TypeAds.BannerCollapse, adValue);
             Debug.Log(String.Format("Banner view paid {0} {1}.", adValue.Value, adValue.CurrencyCode));
         };
         // Raised when an impression is recorded for an ad.

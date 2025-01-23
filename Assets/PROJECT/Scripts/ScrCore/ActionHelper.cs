@@ -1,4 +1,5 @@
 ﻿using GoogleMobileAds.Api;
+using IngameDebugConsole;
 using Newtonsoft.Json.Linq;
 using Singular;
 using System;
@@ -9,6 +10,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static GoogleMobileAds.Api.AdValue;
 
 public enum TypeSceneCurrent
 {
@@ -793,7 +795,7 @@ public static class ActionHelper
     {
         if (CC_Ads.instance == null)
             Debug.Log("cc ads null");
-     
+
         CC_Ads.instance.LevelShowCMP(callback);
     }
     public static void CheckShowInter(string idAds, Action<bool> callback = null, bool isCountTime = true)
@@ -809,17 +811,17 @@ public static class ActionHelper
             if (isCountTime)
             {
                 if (AdsConfig.instance != null)
-                    AdsConfig.instance.CheckShowInter(idAds,callback);
+                    AdsConfig.instance.CheckShowInter(idAds, callback);
                 else
-                    CC_Interface.instance.ShowInter(idAds,callback);
+                    CC_Interface.instance.ShowInter(idAds, callback);
             }
             else
-                CC_Interface.instance.ShowInter(idAds,callback);
+                CC_Interface.instance.ShowInter(idAds, callback);
         }
         else
             callback?.Invoke(true);
     }
-    public static void ShowRewardAds(string idAds,string where = "", Action<bool> callback = null)
+    public static void ShowRewardAds(string idAds, string where = "", Action<bool> callback = null)
     {
 
         LogEvent(KeyLogFirebase.AdsRewardClick + where);
@@ -861,18 +863,76 @@ public static class ActionHelper
             callback?.Invoke(true);
         }
     }
-    public static void TrackRevenue_Event(TypeAds typeAds, AdValue adValue)
+    public static void TrackRevenue_Event(object obj, TypeAds typeAds, AdValue adValue)
     {
-        SingularSDK.CustomRevenue(typeAds.ToString(), "USD", (double)adValue.Value / 1000000);
+        if (IsEditor()) return;
+
+        long valueMicros = adValue.Value;
+        string currencyCode = adValue.CurrencyCode;
+        PrecisionType precision = adValue.Precision;
+        double revenueAmount = valueMicros / 1000000f;
+        ResponseInfo responseInfo = null;
+        if (obj is RewardedAd rewardedAd)
+        {
+            responseInfo = rewardedAd.GetResponseInfo();
+        }
+        if (obj is InterstitialAd inter)
+        {
+            responseInfo = inter.GetResponseInfo();
+        }
+        if (obj is BannerView banner)
+        {
+            responseInfo = banner.GetResponseInfo();
+        }
+        if (obj is AppOpenAd aoa)
+        {
+            responseInfo = aoa.GetResponseInfo();
+        }
+        if (obj is NativeAd nativeAds)
+        {
+            responseInfo = nativeAds.GetResponseInfo();
+        }
+        if (obj is BannerView bannerCollap)
+        {
+            responseInfo = bannerCollap.GetResponseInfo();
+        }
+        string responseId = responseInfo.GetResponseId();
+
+        AdapterResponseInfo loadedAdapterResponseInfo = responseInfo.GetLoadedAdapterResponseInfo();
+        string adSourceId = loadedAdapterResponseInfo.AdSourceId;
+        string adSourceInstanceId = loadedAdapterResponseInfo.AdSourceInstanceId;
+        string adSourceInstanceName = loadedAdapterResponseInfo.AdSourceInstanceName;
+        string adSourceName = loadedAdapterResponseInfo.AdSourceName;
+        string adapterClassName = loadedAdapterResponseInfo.AdapterClassName;
+        long latencyMillis = loadedAdapterResponseInfo.LatencyMillis;
+        Dictionary<string, string> credentials = loadedAdapterResponseInfo.AdUnitMapping;
+
+        Dictionary<string, string> extras = responseInfo.GetResponseExtras();
+        string mediationGroupName = extras["mediation_group_name"];
+        string mediationABTestName = extras["mediation_ab_test_name"];
+        string mediationABTestVariant = extras["mediation_ab_test_variant"];
+
+        string eventName = "AdRevenue"; // Tên sự kiện
+        string productSKU = adSourceId; // Mã sản phẩm là ID nguồn quảng cáo
+        string productName = adSourceName; // Tên sản phẩm là tên nguồn quảng cáo
+        string productCategory = "Ad"; // Danh mục sản phẩm
+        int productQuantity = 1; // Số lượng mặc định là 1
+        double productPrice = revenueAmount; // Giá mỗi sản phẩm (bằng tổng doanh thu)
+
+        Debug.Log("Start Loc Revenue ");
+        SingularSDK.CustomRevenue(eventName, currencyCode, revenueAmount, productSKU, productName, productCategory, productQuantity, productPrice);
+        Debug.Log($"Ad Revenue Event Sent: {eventName}, Currency: {currencyCode}, Revenue: {revenueAmount}, Source: {adSourceName}");
+
+
         Debug.Log("TrackRevenue_Event _ Type ads = " + typeAds + "|| Value = " + ((double)adValue.Value / 1000000));
         Firebase.Analytics.Parameter[] AdParameters = {
              new Firebase.Analytics.Parameter("ad_platform", "GoogleAdmob"),
               new Firebase.Analytics.Parameter("currency","USD"),
-            new Firebase.Analytics.Parameter("value", (double)adValue.Value/1000000)
+            new Firebase.Analytics.Parameter("value", revenueAmount)
         };
         Firebase.Analytics.FirebaseAnalytics.LogEvent(typeAds.ToString(), AdParameters);
     }
-    public static void TrackRevenueIAP(string currency,double price)
+    public static void TrackRevenueIAP(string currency, double price)
     {
         SingularSDK.CustomRevenue(TypeAds.IAP.ToString(), currency, price);
         Firebase.Analytics.Parameter[] AdParameters = {

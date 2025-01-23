@@ -116,7 +116,7 @@ public class ManagerNativeAds : MonoBehaviour
 
         adLoader.OnNativeAdLoaded += this.HandleNativeAdLoaded;
         adLoader.OnAdFailedToLoad += this.HandleAdFailedToLoad;
-     //   adLoader.LoadAd(new AdRequest.Builder().Build());
+        //   adLoader.LoadAd(new AdRequest.Builder().Build());
     }
 
     private void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -135,8 +135,8 @@ public class ManagerNativeAds : MonoBehaviour
 
     private void AdsImpression(object sender, AdValueEventArgs args)
     {
-        ActionHelper.TrackRevenue_Event(TypeAds.NativeAds, args.AdValue);
+        ActionHelper.TrackRevenue_Event(adNative, TypeAds.NativeAds, args.AdValue);
     }
-  
+
     #endregion
 }

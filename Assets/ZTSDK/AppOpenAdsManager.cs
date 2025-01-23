@@ -53,7 +53,7 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Loads the app open ad.
     /// </summary>
-    public void LoadAppOpenAd( UnityAction callback = null)
+    public void LoadAppOpenAd(UnityAction callback = null)
     {
         _adUnitId = ActionHelper.GetSceneCurrent() == TypeSceneCurrent.BeginScene ? "ca-app-pub-9912310468706838/9852900361" : "ca-app-pub-9912310468706838/5881865768";
         // Clean up the old ad before loading a new one.
@@ -97,9 +97,9 @@ public class AppOpenAdsManager : MonoBehaviour
     /// <summary>
     /// Shows the app open ad.
     /// </summary>
-    public void ShowAppOpenAd( UnityAction callback)
+    public void ShowAppOpenAd(UnityAction callback)
     {
-        StartCoroutine(IE_WaitShowAOA( callback));
+        StartCoroutine(IE_WaitShowAOA(callback));
     }
     public IEnumerator IE_WaitShowAOA(UnityAction callback)
     {
@@ -122,7 +122,7 @@ public class AppOpenAdsManager : MonoBehaviour
             Debug.Log(String.Format("App open ad paid {0} {1}.",
                 adValue.Value,
                 adValue.CurrencyCode));
-            ActionHelper.TrackRevenue_Event(TypeAds.Aoa, adValue);
+            ActionHelper.TrackRevenue_Event(ad, TypeAds.Aoa, adValue);
         };
         // Raised when an impression is recorded for an ad.
         ad.OnAdImpressionRecorded += () =>
